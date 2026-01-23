@@ -6,3 +6,6 @@ downloadDistrictWiseXLSX4KVSZipDuplicate
 fundAllocationtracker
 
 npm i react-router-dom
+
+
+npx json-server --watch db.json --port 3001
