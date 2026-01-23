@@ -31,14 +31,14 @@ server.post("/login", (req, res) => {
   }
 });
 
-// ✅ ADD REVENUE API (POST)
-server.post("/addRevenue", (req, res) => {
-  const { totalRevenue, allocatedAmount, date } = req.body;
 
-  if (!totalRevenue || !allocatedAmount || !date) {
+server.post("/addRevenue", (req, res) => {
+  const { totalRevenue, allocatedAmount, date, role, attachmentName } = req.body;
+
+  if (!totalRevenue || !allocatedAmount || !date || !role) {
     return res.status(400).json({
       success: false,
-      message: "totalRevenue, allocatedAmount, date are required",
+      message: "totalRevenue, allocatedAmount, date, role are required",
     });
   }
 
@@ -47,6 +47,8 @@ server.post("/addRevenue", (req, res) => {
     totalRevenue: Number(totalRevenue),
     allocatedAmount: Number(allocatedAmount),
     date,
+    role,
+    attachmentName: attachmentName || null,
   };
 
   router.db.get("revenue").push(revenueData).write();
@@ -57,6 +59,8 @@ server.post("/addRevenue", (req, res) => {
     data: revenueData,
   });
 });
+
+
 
 // default routes (GET /revenue works automatically)
 server.use(router);

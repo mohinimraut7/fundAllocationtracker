@@ -14,9 +14,25 @@ export default function RevenueAllocation() {
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(false);
 
+  // ✅ Login मधून role घे (localStorage)
+  const [role, setRole] = useState("");
+
+  useEffect(() => {
+    const savedRole = localStorage.getItem("userRole");
+    if (savedRole) {
+      setRole(savedRole);
+    } else {
+      // fallback (जर role set नसेल तर)
+      setRole("Collector Office");
+    }
+  }, []);
+
+  // ✅ Role wise allocation %
+  const allocationPercent = role === "Collector Office" ? 3 : 5;
+
   const todayDate = new Date().toLocaleDateString("en-GB"); // DD/MM/YYYY
 
-  // ✅ GET latest revenue on page load
+  // ✅ GET latest revenue (role wise)
   const fetchLatestRevenue = async () => {
     try {
       setPageLoading(true);
@@ -25,12 +41,28 @@ export default function RevenueAllocation() {
       const data = await res.json();
 
       if (data && data.length > 0) {
-        const latest = data[data.length - 1];
+        // ✅ role wise filter
+        const roleWiseData = data.filter((r) => r.role === role);
 
-        setSavedRevenue(latest.totalRevenue);
-        setAllocatedAmount(latest.allocatedAmount);
-        setSavedDate(latest.date);
-        setSavedAttachmentName(latest.attachmentName || null);
+        if (roleWiseData.length > 0) {
+          const latest = roleWiseData[roleWiseData.length - 1];
+
+          setSavedRevenue(latest.totalRevenue);
+          setAllocatedAmount(latest.allocatedAmount);
+          setSavedDate(latest.date);
+          setSavedAttachmentName(latest.attachmentName || null);
+        } else {
+          // ✅ त्या role ला data नसेल तर
+          setSavedRevenue(null);
+          setAllocatedAmount(null);
+          setSavedDate(null);
+          setSavedAttachmentName(null);
+        }
+      } else {
+        setSavedRevenue(null);
+        setAllocatedAmount(null);
+        setSavedDate(null);
+        setSavedAttachmentName(null);
       }
     } catch (error) {
       console.log("GET revenue error:", error);
@@ -39,9 +71,10 @@ export default function RevenueAllocation() {
     }
   };
 
+  // ✅ role set झाल्यावरच fetch कर
   useEffect(() => {
-    fetchLatestRevenue();
-  }, []);
+    if (role) fetchLatestRevenue();
+  }, [role]);
 
   // ✅ POST Revenue
   const handleSave = async () => {
@@ -55,13 +88,14 @@ export default function RevenueAllocation() {
       return;
     }
 
-    const allocation = (Number(totalRevenue) * 5) / 100;
+    const allocation = (Number(totalRevenue) * allocationPercent) / 100;
 
     const payload = {
       totalRevenue: Number(totalRevenue),
       allocatedAmount: Number(allocation),
       date: todayDate,
       attachmentName: attachment?.name,
+      role, // ✅ IMPORTANT (role wise save)
     };
 
     try {
@@ -82,6 +116,7 @@ export default function RevenueAllocation() {
         return;
       }
 
+      // ✅ save झाल्यावर लगेच latest update कर
       setSavedRevenue(result.data.totalRevenue);
       setAllocatedAmount(result.data.allocatedAmount);
       setSavedDate(result.data.date);
@@ -100,7 +135,7 @@ export default function RevenueAllocation() {
 
   return (
     <div className="p-6 bg-gray-50 min-h-full">
-      {/* ✅ Top Header (Screenshot style) */}
+      {/* ✅ Top Header */}
       <div className="bg-white rounded-2xl shadow-sm border p-5">
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
@@ -109,6 +144,11 @@ export default function RevenueAllocation() {
             </h1>
             <p className="text-sm text-gray-500 mt-1">
               Manage and allocate total revenue efficiently
+            </p>
+
+            {/* ✅ Role show */}
+            <p className="text-xs text-gray-500 mt-1">
+              Logged Role: <span className="font-semibold">{role || "--"}</span>
             </p>
           </div>
 
@@ -120,14 +160,15 @@ export default function RevenueAllocation() {
           </button>
         </div>
 
-        {/* ✅ Filter row (like screenshot dropdown filters) */}
+        {/* ✅ Filter row */}
         <div className="mt-5 flex flex-wrap items-center gap-3">
           <div className="px-4 py-2 rounded-full border bg-white text-sm text-gray-600">
             Date: <span className="font-semibold">{savedDate || "--"}</span>
           </div>
 
           <div className="px-4 py-2 rounded-full border bg-white text-sm text-gray-600">
-            Allocation Rule: <span className="font-semibold">5%</span>
+            Allocation Rule:{" "}
+            <span className="font-semibold">{allocationPercent}%</span>
           </div>
 
           <div className="px-4 py-2 rounded-full border bg-white text-sm text-gray-600">
@@ -146,7 +187,7 @@ export default function RevenueAllocation() {
             Latest Revenue Entry
           </h2>
           <p className="text-xs text-gray-500 mt-1">
-            Showing last saved revenue record
+            Showing last saved revenue record (Role wise)
           </p>
         </div>
 
@@ -157,7 +198,9 @@ export default function RevenueAllocation() {
               <tr>
                 <th className="text-left px-6 py-3">Submitted Date</th>
                 <th className="text-left px-6 py-3">Total Revenue</th>
-                <th className="text-left px-6 py-3">Allocated (5%)</th>
+                <th className="text-left px-6 py-3">
+                  Allocated ({allocationPercent}%)
+                </th>
                 <th className="text-left px-6 py-3">Document</th>
                 <th className="text-right px-6 py-3">Action</th>
               </tr>
@@ -209,7 +252,7 @@ export default function RevenueAllocation() {
               ) : (
                 <tr>
                   <td colSpan="5" className="px-6 py-8 text-center text-gray-400">
-                    No revenue added yet
+                    No revenue added yet for <b>{role}</b>
                   </td>
                 </tr>
               )}
@@ -218,7 +261,7 @@ export default function RevenueAllocation() {
         </div>
       </div>
 
-      {/* ✅ Modal (same functionality but clean design) */}
+      {/* ✅ Modal */}
       {open && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
           <div className="bg-white rounded-2xl w-full max-w-lg shadow-xl overflow-hidden">
@@ -269,12 +312,13 @@ export default function RevenueAllocation() {
                 {totalRevenue && (
                   <div className="mt-2 px-4 py-3 rounded-xl border bg-blue-50">
                     <p className="text-sm text-gray-700">
-                      Allocated (5%):{" "}
+                      Allocated ({allocationPercent}%):{" "}
                       <span className="font-bold text-green-700">
                         ₹{" "}
-                        {((Number(totalRevenue) * 5) / 100).toLocaleString(
-                          "en-IN"
-                        )}
+                        {(
+                          (Number(totalRevenue) * allocationPercent) /
+                          100
+                        ).toLocaleString("en-IN")}
                       </span>
                     </p>
                   </div>
@@ -312,7 +356,7 @@ export default function RevenueAllocation() {
                   setTotalRevenue("");
                   setAttachment(null);
                 }}
-                className="px-5 py-2 rounded-xl border text-gray-600 hover:bg-gray-100 transition"
+                className="px-5 py-2 rounded-xl border text-gray-600 hover:bg-gray--100 transition"
               >
                 Cancel
               </button>
