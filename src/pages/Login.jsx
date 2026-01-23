@@ -50,8 +50,9 @@ export default function Login() {
         <div className="hidden md:flex w-1/2 h-full relative flex-col justify-center px-20 text-white">
 
           {/* Soft gradient behind text only */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
-
+           <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
+  
+  
           <div className="relative z-10">
 
             {/* Title */}
