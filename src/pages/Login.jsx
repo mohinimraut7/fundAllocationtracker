@@ -394,6 +394,7 @@ import { loginSuccess } from "../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 import bgImage from "../assets/bg.webp";
 
+
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
