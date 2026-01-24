@@ -124,6 +124,7 @@ if (variant === "horizontal") {
           Logout
         </button>
       </div>
+      
     </aside>
   );
 }
