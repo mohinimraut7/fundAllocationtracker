@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 
 import Login from "./pages/Login";
+import Registration from "./pages/Registration";
 import Dashboard from "./pages/Dashboard";
 import RevenueAllocation from "./pages/RevenueAllocation";
 import DashboardLayout from "./components/common/DashboardLayout";
@@ -38,8 +39,10 @@ export default function App() {
 
   return (
     <Routes>
+      <Route path="/" element={<Navigate to="/login"/>} />
     
-      <Route path="/" element={<Login />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Registration />} />
 
     
       <Route element={<ProtectedRoute />}>
