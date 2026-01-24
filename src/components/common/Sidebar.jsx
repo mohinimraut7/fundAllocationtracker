@@ -2,6 +2,8 @@ import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/slices/authSlice";
+import { ImSwitch } from "react-icons/im";
+
 
 export default function Sidebar({ variant = "vertical" }) {
   const dispatch = useDispatch();
@@ -26,7 +28,18 @@ export default function Sidebar({ variant = "vertical" }) {
 if (variant === "horizontal") {
   return (
     <div className="w-full bg-transparent px-4 py-3">
-      <div className="max-w-md mx-auto bg-white rounded-full shadow-md px-2 py-2 flex items-center justify-between">
+      <div className="w-full mx-auto bg-white rounded-full shadow-md px-2 py-2 flex items-center justify-between">
+
+         {/* 🔹 Logo + App Name (Name NEVER hidden) */}
+        <div className="flex items-center gap-2">
+          <div className="flex items-center justify-center h-9 w-9 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold shadow">
+            ₹
+          </div>
+          <span className="text-sm font-semibold text-gray-800">
+            Fund Tracker
+          </span>
+        </div>
+        
 
         {/* Dashboard */}
         <NavLink
@@ -60,14 +73,25 @@ if (variant === "horizontal") {
           <span>Revenue</span>
         </NavLink>
 
-        {/* Logout */}
-        <button
-          onClick={handleLogout}
-          className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium text-red-500 hover:bg-red-50 transition-all duration-200"
-        >
-          <span>🚪</span>
-          <span>Logout</span>
-        </button>
+        {/* 🔹 LOGOUT CIRCLE BUTTON WITH ImSwitch ICON */}
+          <button
+            onClick={handleLogout}
+            className="
+              flex items-center justify-center 
+              h-10 w-10 
+              rounded-full 
+              bg-red-50 
+              text-red-500 
+              hover:bg-red-100 
+              hover:text-red-600 
+              transition-all duration-200 
+              shadow-sm
+            "
+            title="Logout"
+          >
+            <ImSwitch className="h-5 w-5" />
+          </button>
+
       </div>
     </div>
   );

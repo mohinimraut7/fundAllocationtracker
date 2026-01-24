@@ -3,15 +3,15 @@ import { Outlet } from "react-router-dom";
 
 export default function DashboardLayout() {
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-gray-100">
+    <div className="min-h-screen flex flex-col lg:flex-row bg-gray-100">
       
       {/* MOBILE: Top Navbar */}
-      <div className="block md:hidden w-full sticky top-0 z-20">
+      <div className="block lg:hidden w-full sticky top-0 z-20">
         <Sidebar variant="horizontal" />
       </div>
 
       {/* DESKTOP: Left Sidebar */}
-      <div className="hidden md:block">
+      <div className="hidden lg:block">
         <Sidebar variant="vertical" />
       </div>
 
