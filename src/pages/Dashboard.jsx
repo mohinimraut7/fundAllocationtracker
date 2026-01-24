@@ -62,7 +62,7 @@ export default function Dashboard() {
       <div className="bg-white rounded-2xl shadow-sm border p-6 flex flex-col md:flex-row justify-between gap-4 md:items-center">
         <div>
           <h2 className="text-2xl font-bold text-gray-800">
-            Welcome {user?.name} ✅
+            Welcome {user?.username} ✅
           </h2>
           <p className="text-gray-500 text-sm mt-1">
             Role: <span className="font-semibold">{user?.role}</span>
@@ -71,7 +71,7 @@ export default function Dashboard() {
 
         <button
           onClick={handleLogout}
-          className="bg-red-500 text-white px-5 py-2 rounded-xl hover:bg-red-600 transition font-semibold"
+          className="hidden md:inline-flex bg-red-500 text-white px-5 py-2 rounded-xl hover:bg-red-600 transition font-semibold"
         >
           Logout
         </button>
