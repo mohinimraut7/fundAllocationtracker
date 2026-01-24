@@ -3,28 +3,81 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/slices/authSlice";
 
-export default function Sidebar() {
+export default function Sidebar({ variant = "vertical" }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const { user } = useSelector((state) => state.auth);
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/");
+    navigate("/login");
   };
 
   const linkClass = ({ isActive }) =>
-    `group relative flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-200
+    `group flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all duration-200
      ${
        isActive
          ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md"
-         : "text-gray-700 hover:bg-gray-100 hover:shadow-sm"
+         : "text-gray-700 hover:bg-gray-100"
      }`;
 
+  // 🔹 MOBILE TOP NAVBAR VERSION
+  
+if (variant === "horizontal") {
+  return (
+    <div className="w-full bg-transparent px-4 py-3">
+      <div className="max-w-md mx-auto bg-white rounded-full shadow-md px-2 py-2 flex items-center justify-between">
+
+        {/* Dashboard */}
+        <NavLink
+          to="/dashboard"
+          className={({ isActive }) =>
+            `flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+             ${
+               isActive
+                 ? "bg-blue-200 text-gray-900 shadow"
+                 : "text-gray-600 hover:bg-gray-100"
+             }`
+          }
+        >
+          <span>🏠</span>
+          <span>Home</span>
+        </NavLink>
+
+        {/* Revenue */}
+        <NavLink
+          to="/revenue-allocation"
+          className={({ isActive }) =>
+            `flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+             ${
+               isActive
+                 ? "bg-blue-200 text-gray-900 shadow"
+                 : "text-gray-600 hover:bg-gray-100"
+             }`
+          }
+        >
+          <span>💰</span>
+          <span>Revenue</span>
+        </NavLink>
+
+        {/* Logout */}
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium text-red-500 hover:bg-red-50 transition-all duration-200"
+        >
+          <span>🚪</span>
+          <span>Logout</span>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+
+  // 🔹 DESKTOP VERTICAL SIDEBAR (YOUR CURRENT DESIGN)
   return (
     <aside className="w-[268px] min-h-screen bg-white border-r shadow-lg flex flex-col">
-      {/* ✅ Top Brand Section */}
+      {/* Top Brand */}
       <div className="px-5 pt-6 pb-5 border-b">
         <div className="flex items-center gap-3">
           <div className="h-12 w-12 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 flex items-center justify-center text-white text-xl shadow-md">
@@ -40,23 +93,20 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* ✅ Menu */}
+      {/* Menu */}
       <nav className="flex-1 px-4 py-6 flex flex-col gap-2">
         <NavLink to="/dashboard" className={linkClass}>
           <span className="text-lg">🏠</span>
           <span>Dashboard</span>
         </NavLink>
 
-        
-       <NavLink to="/revenue-allocation" className={linkClass}>
-  <span className="text-lg">💰</span>
-  <span>Revenue Allocation</span>
-</NavLink>
-
-
+        <NavLink to="/revenue-allocation" className={linkClass}>
+          <span className="text-lg">💰</span>
+          <span>Revenue Allocation</span>
+        </NavLink>
       </nav>
 
-      {/* ✅ Bottom Profile + Logout */}
+      {/* Bottom Profile + Logout */}
       <div className="p-4 border-t">
         <div className="bg-gray-50 rounded-2xl p-4 mb-3 shadow-sm">
           <p className="text-sm font-semibold text-gray-800">
