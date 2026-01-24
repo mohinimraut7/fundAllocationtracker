@@ -279,7 +279,8 @@ export default function Login() {
 
             <div className="hidden md:block">
               <p className="mt-6 text-xl font-semibold text-white drop-shadow max-w-lg">
-                Login to access the Fund Allocation Tracker.
+                You can securely access the Fund Allocation Tracker using your
+                official credentials.
               </p>
 
               <p className="mt-6 text-lg text-slate-200 drop-shadow max-w-lg">

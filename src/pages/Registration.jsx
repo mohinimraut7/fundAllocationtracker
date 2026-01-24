@@ -856,13 +856,24 @@ export default function Registration() {
                   />
                 </div>
 
-                {/* Button */}
+                {/* Register Button */}
                 <button
-                  type="submit"
-                  className="w-full py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition"
+                type="submit"
+                className="w-full py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition"
                 >
-                  SIGN IN
+                SIGN UP
                 </button>
+
+                {/* Redirect to Login */}
+                <div className="text-center text-sm text-white/90">
+                  Already registered?{" "}
+                  <span
+                    onClick={() => navigate("/login")}
+                    className="text-blue-300 hover:underline font-semibold cursor-pointer"
+                  >
+                    Login here
+                  </span>
+                </div>
 
                 <div className="text-center text-white/80 text-xs">
                   © {new Date().getFullYear()} Fund Tracker System
