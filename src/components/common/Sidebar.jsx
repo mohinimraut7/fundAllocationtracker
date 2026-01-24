@@ -107,6 +107,7 @@ if (variant === "horizontal") {
           <div className="h-12 w-12 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 flex items-center justify-center text-white text-xl shadow-md">
             ₹
           </div>
+          
 
           <div>
             <h2 className="text-lg font-bold text-gray-800">
