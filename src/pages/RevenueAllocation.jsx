@@ -14,7 +14,7 @@ export default function RevenueAllocation() {
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(false);
 
-  // ✅ Login मधून role घे (localStorage)
+  
   const [role, setRole] = useState("");
 
   useEffect(() => {
@@ -22,17 +22,17 @@ export default function RevenueAllocation() {
     if (savedRole) {
       setRole(savedRole);
     } else {
-      // fallback (जर role set नसेल तर)
+      
       setRole("Collector Office");
     }
   }, []);
 
-  // ✅ Role wise allocation %
+ 
   const allocationPercent = role === "Collector Office" ? 3 : 5;
 
-  const todayDate = new Date().toLocaleDateString("en-GB"); // DD/MM/YYYY
+  const todayDate = new Date().toLocaleDateString("en-GB"); 
 
-  // ✅ GET latest revenue (role wise)
+  
   const fetchLatestRevenue = async () => {
     try {
       setPageLoading(true);
@@ -41,7 +41,7 @@ export default function RevenueAllocation() {
       const data = await res.json();
 
       if (data && data.length > 0) {
-        // ✅ role wise filter
+        
         const roleWiseData = data.filter((r) => r.role === role);
 
         if (roleWiseData.length > 0) {
@@ -52,7 +52,7 @@ export default function RevenueAllocation() {
           setSavedDate(latest.date);
           setSavedAttachmentName(latest.attachmentName || null);
         } else {
-          // ✅ त्या role ला data नसेल तर
+          
           setSavedRevenue(null);
           setAllocatedAmount(null);
           setSavedDate(null);
@@ -71,12 +71,12 @@ export default function RevenueAllocation() {
     }
   };
 
-  // ✅ role set झाल्यावरच fetch कर
+  
   useEffect(() => {
     if (role) fetchLatestRevenue();
   }, [role]);
 
-  // ✅ POST Revenue
+ 
   const handleSave = async () => {
     if (!totalRevenue) {
       alert("Please enter total revenue");
@@ -95,7 +95,7 @@ export default function RevenueAllocation() {
       allocatedAmount: Number(allocation),
       date: todayDate,
       attachmentName: attachment?.name,
-      role, // ✅ IMPORTANT (role wise save)
+      role, 
     };
 
     try {
@@ -116,7 +116,7 @@ export default function RevenueAllocation() {
         return;
       }
 
-      // ✅ save झाल्यावर लगेच latest update कर
+      
       setSavedRevenue(result.data.totalRevenue);
       setAllocatedAmount(result.data.allocatedAmount);
       setSavedDate(result.data.date);
@@ -135,7 +135,7 @@ export default function RevenueAllocation() {
 
   return (
     <div className="p-6 bg-gray-50 min-h-full">
-      {/* ✅ Top Header */}
+    
       <div className="bg-white rounded-2xl shadow-sm border p-5">
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
@@ -146,7 +146,7 @@ export default function RevenueAllocation() {
               Manage and allocate total revenue efficiently
             </p>
 
-            {/* ✅ Role show */}
+          
             <p className="text-xs text-gray-500 mt-1">
               Logged Role: <span className="font-semibold">{role || "--"}</span>
             </p>
@@ -160,7 +160,7 @@ export default function RevenueAllocation() {
           </button>
         </div>
 
-        {/* ✅ Filter row */}
+      
         <div className="mt-5 flex flex-wrap items-center gap-3">
           <div className="px-4 py-2 rounded-full border bg-white text-sm text-gray-600">
             Date: <span className="font-semibold">{savedDate || "--"}</span>
@@ -180,7 +180,7 @@ export default function RevenueAllocation() {
         </div>
       </div>
 
-      {/* ✅ Table Card */}
+    
       <div className="bg-white rounded-2xl shadow-sm border mt-6 overflow-hidden">
         <div className="px-6 py-4 border-b">
           <h2 className="text-base font-semibold text-gray-800">
@@ -191,7 +191,7 @@ export default function RevenueAllocation() {
           </p>
         </div>
 
-        {/* Table */}
+       
         <div className="w-full overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-gray-50 text-gray-500 uppercase text-xs">
@@ -261,11 +261,11 @@ export default function RevenueAllocation() {
         </div>
       </div>
 
-      {/* ✅ Modal */}
+   
       {open && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
           <div className="bg-white rounded-2xl w-full max-w-lg shadow-xl overflow-hidden">
-            {/* Modal Header */}
+            
             <div className="px-6 py-4 border-b flex items-center justify-between">
               <div>
                 <h2 className="text-lg font-bold text-gray-800">Add Revenue</h2>
@@ -286,9 +286,9 @@ export default function RevenueAllocation() {
               </button>
             </div>
 
-            {/* Modal Body */}
+           
             <div className="p-6 space-y-5">
-              {/* Date */}
+           
               <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-gray-50 border">
                 <span className="text-sm text-gray-600">Date</span>
                 <span className="text-sm font-semibold text-gray-800">
@@ -296,7 +296,7 @@ export default function RevenueAllocation() {
                 </span>
               </div>
 
-              {/* Revenue Input */}
+              
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-1">
                   Total Revenue (₹)
@@ -325,7 +325,7 @@ export default function RevenueAllocation() {
                 )}
               </div>
 
-              {/* Attachment */}
+            
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-1">
                   Attach Document
@@ -348,7 +348,7 @@ export default function RevenueAllocation() {
               </div>
             </div>
 
-            {/* Modal Footer */}
+          
             <div className="px-6 py-4 border-t flex justify-end gap-3">
               <button
                 onClick={() => {
