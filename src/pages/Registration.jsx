@@ -536,6 +536,7 @@ export default function Registration() {
       collector: "Collector Office",
       corporation: "Corporation / NagarPalika",
       grampanchayat: "Grampanchayat",
+      wcd:"Super Admin"
     };
 
     // ✅ register payload
@@ -669,7 +670,7 @@ export default function Registration() {
                   <label className="block text-sm text-white mb-2">
                     Select Role
                   </label>
-                  <select
+                  {/* <select
                     name="role"
                     value={form.role}
                     onChange={(e) => {
@@ -704,7 +705,44 @@ export default function Registration() {
                       Corporation / NagarPalika
                     </option>
                     <option value="grampanchayat">Grampanchayat</option>
-                  </select>
+                  </select> */}
+                  <select
+  name="role"
+  value={form.role}
+  onChange={(e) => {
+    handleChange(e);
+
+    if (e.target.value === "collector") {
+      setForm((prev) => ({
+        ...prev,
+        corporationDistrict: "",
+        municipality: "",
+      }));
+    } else if (e.target.value === "corporation") {
+      setForm((prev) => ({
+        ...prev,
+        region: "",
+        collectorOffice: "",
+      }));
+    } else {
+      // grampanchayat + wcd
+      setForm((prev) => ({
+        ...prev,
+        region: "",
+        collectorOffice: "",
+        corporationDistrict: "",
+        municipality: "",
+      }));
+    }
+  }}
+  className="w-full px-4 py-3 rounded-lg bg-white/90 text-slate-800 outline-none transition focus:ring-2 focus:ring-blue-500"
+>
+  <option value="collector">Collector Office</option>
+  <option value="corporation">Corporation / NagarPalika</option>
+  <option value="grampanchayat">Grampanchayat</option>
+  <option value="wcd">WCD (Super Admin)</option>
+</select>
+
                 </div>
 
                 {/* Collector: Region */}

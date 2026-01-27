@@ -58,6 +58,11 @@ if (variant === "horizontal") {
         </NavLink>
 
         {/* Revenue */}
+
+
+
+
+         {user?.role !== "Super Admin" && (
         <NavLink
           to="/revenue-allocation"
           className={({ isActive }) =>
@@ -72,6 +77,10 @@ if (variant === "horizontal") {
           <span>💰</span>
           <span>Revenue</span>
         </NavLink>
+ )}
+
+
+
 
         {/* 🔹 LOGOUT CIRCLE BUTTON WITH ImSwitch ICON */}
           <button
@@ -124,10 +133,19 @@ if (variant === "horizontal") {
           <span>Dashboard</span>
         </NavLink>
 
-        <NavLink to="/revenue-allocation" className={linkClass}>
+        {/* <NavLink to="/revenue-allocation" className={linkClass}>
           <span className="text-lg">💰</span>
           <span>Revenue Allocation</span>
-        </NavLink>
+        </NavLink> */}
+
+
+        {user?.role !== "Super Admin" && (
+  <NavLink to="/revenue-allocation" className={linkClass}>
+    <span className="text-lg">💰</span>
+    <span>Revenue Allocation</span>
+  </NavLink>
+)}
+
       </nav>
 
       {/* Bottom Profile + Logout */}

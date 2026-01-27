@@ -677,10 +677,27 @@ export default function Dashboard() {
   // ✅ role wise filter (same as RevenueAllocation screen)
   const role = localStorage.getItem("userRole") || user?.role;
 
-  const roleWiseRevenues = useMemo(() => {
-    if (!role) return revenues;
-    return revenues.filter((r) => r.role === role);
-  }, [revenues, role]);
+  // const roleWiseRevenues = useMemo(() => {
+  //   if (!role) return revenues;
+  //   return revenues.filter((r) => r.role === role);
+  // }, [revenues, role]);
+
+
+
+const roleWiseRevenues = useMemo(() => {
+  if (!role) return revenues;
+
+  // 👑 Super Admin → ALL DATA
+  if (role === "Super Admin") {
+    return revenues;
+  }
+
+  // बाकी roles → role-wise data
+  return revenues.filter((r) => r.role === role);
+}, [revenues, role]);
+
+
+
 
   // ✅ Calculations
   const totalEntries = roleWiseRevenues.length;
