@@ -23,6 +23,9 @@ export default function RevenueAllocation() {
 
   const [role, setRole] = useState("");
   const [latestRevenueId, setLatestRevenueId] = useState(null);
+  const [financialYear, setFinancialYear] = useState("");
+const [savedFinancialYear, setSavedFinancialYear] = useState(null);
+
   const navigate = useNavigate();
 
 
@@ -49,7 +52,9 @@ export default function RevenueAllocation() {
           setLatestRevenueId(latest._id);
           setSavedRevenue(latest.totalRevenue);
           setAllocatedAmount(latest.allocatedAmount);
-          setSavedDate(latest.date);
+          // setSavedDate(latest.date);
+          setSavedFinancialYear(latest.financialYear);
+
           setSavedAttachmentName(latest.attachmentName);
           setSavedAttachmentUrl(latest.attachmentUrl);
           return;
@@ -58,7 +63,9 @@ export default function RevenueAllocation() {
 
       setSavedRevenue(null);
       setAllocatedAmount(null);
-      setSavedDate(null);
+      // setSavedDate(null);
+      setSavedFinancialYear(null);
+
       setSavedAttachmentName(null);
       setSavedAttachmentUrl(null);
       setLatestRevenueId(null);
@@ -74,6 +81,10 @@ export default function RevenueAllocation() {
   }, [role]);
 
   const handleSave = async () => {
+    if (!financialYear) {
+  return alert("Please select Financial Year");
+}
+
     if (!totalRevenue) return alert("Please enter total revenue");
     if (!attachment) return alert("Please attach document ✅");
 
@@ -84,7 +95,8 @@ export default function RevenueAllocation() {
       const formData = new FormData();
       formData.append("totalRevenue", totalRevenue);
       formData.append("allocatedAmount", allocation);
-      formData.append("date", todayDate);
+      // formData.append("date", todayDate);
+      formData.append("financialYear", financialYear);
       formData.append("role", role);
       formData.append("attachment", attachment);
 
@@ -115,6 +127,26 @@ export default function RevenueAllocation() {
     }
   };
 
+
+  const getFinancialYears = (count = 10) => {
+  const years = [];
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth(); // 0 = Jan
+
+  // April (3) नंतर असेल तर current FY चालू
+  const startYear = month >= 3 ? year : year - 1;
+
+  for (let i = 0; i < count; i++) {
+    const fyStart = startYear - i;
+    const fyEnd = (fyStart + 1).toString().slice(-2);
+    years.push(`${fyStart}-${fyEnd}`);
+  }
+
+  return years;
+};
+
+
   return (
     <div className="p-6 bg-gray-50 min-h-full">
       {/* HEADER */}
@@ -143,7 +175,9 @@ export default function RevenueAllocation() {
         <table className="w-full text-sm">
           <thead className="bg-gray-50 text-xs uppercase">
             <tr>
-              <th className="px-6 py-3 text-left">Date</th>
+              {/* <th className="px-6 py-3 text-left">Date</th> */}
+              <th className="px-6 py-3 text-left">Financial Year</th>
+
               <th className="px-6 py-3 text-left">Total</th>
               <th className="px-6 py-3 text-left">
                 Allocated ({allocationPercent}%)
@@ -162,11 +196,14 @@ export default function RevenueAllocation() {
               </tr>
             ) : savedRevenue ? (
               <tr className="border-t" 
-              onClick={() =>
-    navigate(`/revenue/${latestRevenueId}/activity`)
-  }
+  
               >
-                <td className="px-6 py-4">{savedDate}</td>
+                {/* <td className="px-6 py-4">{savedDate}</td> */}
+
+                <td className="px-6 py-4 font-semibold">
+  {savedFinancialYear}
+</td>
+
                 <td className="px-6 py-4">
                   ₹ {Number(savedRevenue).toLocaleString("en-IN")}
                 </td>
@@ -188,6 +225,20 @@ export default function RevenueAllocation() {
                  <td className="px-6 py-4">
     <button
       className="px-4 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 transition"
+  //                 onClick={() =>
+  //   navigate(`/revenue/${latestRevenueId}/activity`)
+  // }
+
+
+onClick={() =>
+  navigate(`/revenue/${latestRevenueId}/activity`, {
+    state: {
+      financialYear: savedFinancialYear,
+    },
+  })
+}
+
+
     >
       View / Add Activity
     </button>
@@ -229,12 +280,33 @@ export default function RevenueAllocation() {
             </div>
 
             <div className="p-6 space-y-5">
-              <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-gray-50 border">
+              {/* <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-gray-50 border">
                 <span className="text-sm text-gray-600">Date</span>
                 <span className="text-sm font-semibold text-gray-800">
                   {todayDate}
                 </span>
-              </div>
+              </div> */}
+
+              <div>
+  <label className="block text-sm font-semibold text-gray-700 mb-1">
+    Financial Year
+  </label>
+
+  <select
+    value={financialYear}
+    onChange={(e) => setFinancialYear(e.target.value)}
+    className="w-full px-4 py-3 border rounded-xl outline-none bg-white"
+  >
+    <option value="">Select Financial Year</option>
+
+    {getFinancialYears(10).map((fy) => (
+      <option key={fy} value={fy}>
+        {fy}
+      </option>
+    ))}
+  </select>
+</div>
+
 
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-1">

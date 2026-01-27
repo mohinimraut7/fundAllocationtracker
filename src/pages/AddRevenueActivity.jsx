@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate,useLocation  } from "react-router-dom";
 import axiosInstance from "../services/axiosInstance";
 
 export default function AddRevenueActivity() {
   const { revenueId } = useParams();
   const navigate = useNavigate();
 
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [activities, setActivities] = useState([]);
+
 
   const [form, setForm] = useState({
     sanctionedOrderNo: "",
@@ -22,6 +24,11 @@ export default function AddRevenueActivity() {
 
   const todayDate = new Date().toLocaleDateString("en-GB");
 
+  const location = useLocation();
+  console.log("ocation.state",location.state)
+const financialYear = location.state?.financialYear;
+
+
   // ---------- Auto Calculate Leftover ----------
   useEffect(() => {
     const sanctioned = Number(form.amountSanctioned || 0);
@@ -34,6 +41,32 @@ export default function AddRevenueActivity() {
       setLeftoverAmount(0);
     }
   }, [form.amountSanctioned, form.amountSpent]);
+
+
+  useEffect(() => {
+  const fetchActivities = async () => {
+    try {
+      const res = await axiosInstance.get("/revenue");
+
+      const matchedRevenue = res.data.data.find(
+        (item) => String(item._id) === String(revenueId)
+      );
+
+      console.log("Matched revenue:", matchedRevenue);
+
+      if (matchedRevenue && Array.isArray(matchedRevenue.activities)) {
+        setActivities(matchedRevenue.activities);
+      } else {
+        setActivities([]);
+      }
+    } catch (err) {
+      console.error("Error fetching activities", err);
+    }
+  };
+
+  fetchActivities();
+}, [revenueId]);
+
 
   // ---------- Handle Input Change ----------
   const handleChange = (e) => {
@@ -102,17 +135,116 @@ export default function AddRevenueActivity() {
     }
   };
 
+
+
+  // financialYear = "2025-26"
+const getDateRangeFromFY = (fy) => {
+  if (!fy) return {};
+
+  const [startYear, endYearShort] = fy.split("-");
+  const start = `${startYear}-04-01`;        // 1 April
+  const end = `20${endYearShort}-03-31`;      // 31 March
+
+  return { start, end };
+};
+
+const { start: minDate, end: maxDate } =
+  getDateRangeFromFY(financialYear);
+
+
   // ================= UI =================
 
   return (
     <div className="p-6 bg-gray-50 min-h-full relative">
       {/* ================= PAGE HEADER ================= */}
-      <div className="bg-white rounded-2xl shadow-sm border p-5">
+      {/* <div className="bg-white rounded-2xl shadow-sm border p-5">
         <h1 className="text-xl font-bold text-gray-800">Revenue Activity</h1>
         <p className="text-sm text-gray-500 mt-1">
           Add sanctioned & expenditure details
         </p>
-      </div>
+      </div> */}
+      <div className="bg-white rounded-2xl shadow-sm border p-5 flex justify-between items-center">
+  <div>
+    <h1 className="text-xl font-bold text-gray-800">Revenue Activity</h1>
+    <p className="text-sm text-gray-500 mt-1">
+      Add sanctioned & expenditure details
+    </p>
+  </div>
+
+  <button
+    onClick={() => setOpen(true)}
+    className="px-5 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700"
+  >
+    + Add Activity
+  </button>
+</div>
+
+{/* ================= ACTIVITIES TABLE ================= */}
+{/* ================= ACTIVITIES TABLE ================= */}
+<div className="mt-6 bg-white rounded-2xl shadow-sm border">
+  <div className="px-5 py-4 border-b">
+    <h2 className="text-lg font-bold text-gray-800">
+      Activity History
+    </h2>
+  </div>
+
+  {activities.length === 0 ? (
+    <div className="p-6 text-center text-gray-500">
+      No activities found
+    </div>
+  ) : (
+    <div className="overflow-x-auto">
+      <table className="w-full text-sm">
+        <thead className="bg-gray-100">
+          <tr>
+            <th className="px-4 py-3 text-left">Order No</th>
+            <th className="px-4 py-3 text-left">Order Date</th>
+            <th className="px-4 py-3 text-right">Sanctioned</th>
+            <th className="px-4 py-3 text-right">Spent</th>
+            <th className="px-4 py-3 text-right">Pending Amount</th>
+            <th className="px-4 py-3 text-left">Vendor</th>
+            <th className="px-4 py-3 text-left">Bill</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {activities.map((act) => (
+            <tr key={act._id} className="border-t">
+              <td className="px-4 py-3">{act.sanctionedOrderNo}</td>
+              <td className="px-4 py-3">
+                {new Date(act.sanctionedOrderDate).toLocaleDateString("en-GB")}
+              </td>
+              <td className="px-4 py-3 text-right">
+                ₹{act.amountSanctioned}
+              </td>
+              <td className="px-4 py-3 text-right">
+                ₹{act.amountSpent}
+              </td>
+              <td className="px-4 py-3 text-right">
+                ₹{act.pendingAmount}
+              </td>
+              <td className="px-4 py-3">
+                {act.vendorBeneficiaryDetails}
+              </td>
+              <td className="px-4 py-3">
+                <a
+                  href={`http://localhost:5000/${act.billUcUpload}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-blue-600 font-semibold"
+                >
+                  View
+                </a>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )}
+</div>
+
+
 
       {/* ================= MODAL ================= */}
       {open && (
@@ -131,7 +263,9 @@ export default function AddRevenueActivity() {
                 </div>
 
                 <button
-                  onClick={() => navigate(-1)}
+                //   onClick={() => navigate(-1)}
+                onClick={() => setOpen(false)}
+
                   className="text-gray-500 hover:text-gray-800 text-xl"
                 >
                   ✕
@@ -140,14 +274,54 @@ export default function AddRevenueActivity() {
 
               {/* BODY (SCROLLABLE) */}
               <div className="p-6 space-y-5 overflow-y-auto flex-1">
-                <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-gray-50 border">
+                {/* <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-gray-50 border">
                   <span className="text-sm text-gray-600">Date</span>
                   <span className="text-sm font-semibold text-gray-800">
                     {todayDate}
                   </span>
-                </div>
+                </div> */}
+               
 
+                
+                   
+
+{financialYear && (
+  <div className="mb-4 px-5 py-3 rounded-xl border-2 border-blue-200 bg-blue-50">
+    <p className="text-lg font-extrabold text-gray-900">
+      Financial Year:
+      <span className="ml-3 text-blue-900 text-2xl font-extrabold">
+        {financialYear}
+      </span>
+    </p>
+
+    <p className="text-sm font-semibold text-gray-700 mt-2">
+      Allowed Date Range:
+      <span className="ml-2 font-bold text-gray-900 text-base">
+        {minDate} to {maxDate}
+      </span>
+    </p>
+  </div>
+)}
+
+
+             
                 <div>
+  <label className="block text-sm font-semibold text-gray-700 mb-1">
+    Sanctioned Order Date
+  </label>
+
+  <input
+    type="date"
+    name="sanctionedOrderDate"
+    value={form.sanctionedOrderDate}
+    onChange={handleChange}
+    min={minDate}      // ✅ FY start
+    max={maxDate}      // ✅ FY end
+    className="w-full px-4 py-3 border rounded-xl outline-none"
+  />
+</div>
+
+<div>
                   <label className="block text-sm font-semibold text-gray-700 mb-1">
                     Sanctioned Order No
                   </label>
@@ -160,21 +334,9 @@ export default function AddRevenueActivity() {
                   />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">
-                    Sanctioned Order Date
-                  </label>
-                  <input
-                    type="date"
-                    name="sanctionedOrderDate"
-                    value={form.sanctionedOrderDate}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border rounded-xl outline-none"
-                  />
-                </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Amount Sanctioned */}
+             
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-1">
                       Amount Sanctioned (₹)
@@ -188,6 +350,8 @@ export default function AddRevenueActivity() {
                       min="0"
                     />
                   </div>
+
+                 
 
                   {/* Amount Spent */}
                   <div>
@@ -218,6 +382,20 @@ export default function AddRevenueActivity() {
                   </div>
                 </div>
 
+                  <div>
+  <label className="block text-sm font-semibold text-gray-700 mb-1">
+    Enter Name
+  </label>
+  <input
+    type="text"
+    name="activityName"
+    value={form.activityName}
+    onChange={handleChange}
+    placeholder="Enter name"
+    className="w-full px-4 py-3 border rounded-xl outline-none"
+  />
+</div>
+
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-1">
                     Vendor / Beneficiary Details
@@ -247,7 +425,8 @@ export default function AddRevenueActivity() {
               {/* FOOTER */}
               <div className="px-6 py-4 border-t flex justify-end gap-3">
                 <button
-                  onClick={() => navigate(-1)}
+                //   onClick={() => navigate(-1)}
+                  onClick={() => setOpen(false)}
                   className="px-5 py-2 rounded-xl border text-gray-600 hover:bg-gray-100"
                 >
                   Cancel
