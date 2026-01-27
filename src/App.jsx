@@ -9,6 +9,7 @@ import RevenueAllocation from "./pages/RevenueAllocation";
 import DashboardLayout from "./components/common/DashboardLayout";
 
 import { loginSuccess } from "./redux/slices/authSlice"; // ✅ import
+import AddRevenueActivity from "./pages/AddRevenueActivity";
 
 
 function ProtectedRoute() {
@@ -48,6 +49,11 @@ export default function App() {
       <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/revenue-allocation" element={<RevenueAllocation />} />
+        <Route
+        path="/revenue/:revenueId/activity"
+       element={<AddRevenueActivity />}
+       />
+
       </Route>
 
      
