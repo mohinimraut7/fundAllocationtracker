@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../services/axiosInstance";
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 export default function RevenueAllocation() {
   const [open, setOpen] = useState(false);
@@ -21,6 +23,8 @@ export default function RevenueAllocation() {
 
   const [role, setRole] = useState("");
   const [latestRevenueId, setLatestRevenueId] = useState(null);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const savedRole = localStorage.getItem("userRole");
@@ -145,6 +149,7 @@ export default function RevenueAllocation() {
                 Allocated ({allocationPercent}%)
               </th>
               <th className="px-6 py-3 text-left">Document</th>
+               <th className="px-6 py-3 text-left">Action</th> {/* ✅ NEW */}
             </tr>
           </thead>
 
@@ -156,18 +161,19 @@ export default function RevenueAllocation() {
                 </td>
               </tr>
             ) : savedRevenue ? (
-              <tr className="border-t">
+              <tr className="border-t" 
+              onClick={() =>
+    navigate(`/revenue/${latestRevenueId}/activity`)
+  }
+              >
                 <td className="px-6 py-4">{savedDate}</td>
                 <td className="px-6 py-4">
                   ₹ {Number(savedRevenue).toLocaleString("en-IN")}
                 </td>
                 <td className="px-6 py-4 font-semibold">
-                  <NavLink
-                    to={`/revenue/${latestRevenueId}/activity`}
-                    className="text-green-600 hover:underline"
-                  >
+                  
                     ₹ {Number(allocatedAmount).toLocaleString("en-IN")}
-                  </NavLink>
+                
                 </td>
                 <td className="px-6 py-4">
                   <a
@@ -179,6 +185,13 @@ export default function RevenueAllocation() {
                     {savedAttachmentName}
                   </a>
                 </td>
+                 <td className="px-6 py-4">
+    <button
+      className="px-4 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 transition"
+    >
+      View / Add Activity
+    </button>
+  </td>
               </tr>
             ) : (
               <tr>
