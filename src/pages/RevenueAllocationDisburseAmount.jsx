@@ -368,6 +368,8 @@ export default function RevenueAllocationDisburseAmount() {
   const [disburseAmount, setDisburseAmount] = useState("");
   const [billUcUpload, setBillUcUpload] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [filterFY, setFilterFY] = useState("");
+
 
   // ================= FETCH ALL ACTIVITIES =================
   useEffect(() => {
@@ -394,20 +396,42 @@ export default function RevenueAllocationDisburseAmount() {
   };
 
   // ================= SEARCH (TABLE FILTER) =================
-  const handleSearch = () => {
-    if (!sanctionedOrderNo) {
-      setFilteredActivities(activities);
-      return;
-    }
+//   const handleSearch = () => {
+//     if (!sanctionedOrderNo) {
+//       setFilteredActivities(activities);
+//       return;
+//     }
 
-    const filtered = activities.filter((a) =>
+//     const filtered = activities.filter((a) =>
+//       a.sanctionedOrderNo
+//         .toLowerCase()
+//         .includes(sanctionedOrderNo.toLowerCase())
+//     );
+
+//     setFilteredActivities(filtered);
+//   };
+
+
+const handleSearch = () => {
+  let filtered = activities;
+
+  // Sanctioned Order filter
+  if (sanctionedOrderNo) {
+    filtered = filtered.filter((a) =>
       a.sanctionedOrderNo
         .toLowerCase()
         .includes(sanctionedOrderNo.toLowerCase())
     );
+  }
 
-    setFilteredActivities(filtered);
-  };
+  // Financial Year filter
+  if (filterFY) {
+    filtered = filtered.filter((a) => a.financialYear === filterFY);
+  }
+
+  setFilteredActivities(filtered);
+};
+
 
   // ================= DISBURSE =================
   const handleDisburse = async () => {
@@ -467,13 +491,32 @@ export default function RevenueAllocationDisburseAmount() {
     }
   };
 
+  const getFinancialYears = (count = 10) => {
+  const years = [];
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth(); // Jan = 0
+
+  // April पासून new FY
+  const startYear = month >= 3 ? year : year - 1;
+
+  for (let i = 0; i < count; i++) {
+    const fyStart = startYear - i;
+    const fyEnd = (fyStart + 1).toString().slice(-2);
+    years.push(`${fyStart}-${fyEnd}`);
+  }
+
+  return years;
+};
+
+
   return (
     <div className="p-6 bg-gray-50 min-h-full">
       {/* HEADER */}
    
 
       {/* SEARCH */}
-      <div className="bg-white rounded-2xl shadow border p-4 mb-4">
+      {/* <div className="bg-white rounded-2xl shadow border p-4 mb-4">
         <div className="flex gap-3">
           <input
             value={sanctionedOrderNo}
@@ -488,7 +531,44 @@ export default function RevenueAllocationDisburseAmount() {
             Search
           </button>
         </div>
-      </div>
+      </div> */}
+
+      <div className="bg-white rounded-2xl shadow border p-4 mb-4">
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+
+    {/* 🔍 Sanctioned Order No */}
+    <div className="flex gap-3">
+      <input
+        value={sanctionedOrderNo}
+        onChange={(e) => setSanctionedOrderNo(e.target.value)}
+        placeholder="Sanctioned Order No"
+        className="flex-1 px-4 py-2 border rounded-lg"
+      />
+      <button
+        onClick={handleSearch}
+        className="px-5 py-2 bg-blue-600 text-white rounded-lg"
+      >
+        Search
+      </button>
+    </div>
+
+    {/* 📅 Financial Year Dropdown */}
+    <select
+      value={filterFY}
+      onChange={(e) => setFilterFY(e.target.value)}
+      className="w-full px-4 py-2 border rounded-lg bg-white"
+    >
+      <option value="">All Financial Years</option>
+      {getFinancialYears(10).map((fy) => (
+        <option key={fy} value={fy}>
+          {fy}
+        </option>
+      ))}
+    </select>
+
+  </div>
+</div>
+
 
       {/* TABLE */}
       <div className="bg-white rounded-2xl shadow border">
