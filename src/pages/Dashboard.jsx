@@ -1230,17 +1230,17 @@ export default function Dashboard() {
         <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm border p-6">
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <h3 className="text-lg font-bold text-gray-800">
-              Market Overview
+            Revenue Allocation Trend
             </h3>
 
             <div className="flex items-center gap-4 text-sm">
               <span className="flex items-center gap-2 text-gray-500">
                 <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-                Activity
+                Allocation
               </span>
               <span className="flex items-center gap-2 text-gray-500">
                 <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
-                Goal
+               Revenue
               </span>
             </div>
           </div>
@@ -1325,7 +1325,7 @@ export default function Dashboard() {
         {/* Sales Overview */}
         <div className="bg-white rounded-2xl shadow-sm border p-6">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-bold text-gray-800">Sales Overview</h3>
+            <h3 className="text-lg font-bold text-gray-800">Allocation Status Summary</h3>
             <span className="text-xs text-gray-500">Today</span>
           </div>
 
@@ -1337,7 +1337,7 @@ export default function Dashboard() {
                 <p className="text-3xl font-bold text-gray-800">
                   {totalEntries > 0 ? "100%" : "0%"}
                 </p>
-                <p className="text-xs text-gray-500 mt-1">System Status</p>
+                <p className="text-xs text-gray-500 mt-1">Fund Utilization</p>
                 <p className="text-sm font-semibold text-green-600 mt-1">
                   {totalEntries > 0 ? "ACTIVE ✅" : "NO DATA"}
                 </p>
@@ -1353,7 +1353,7 @@ export default function Dashboard() {
         {/* Sales Analytics */}
         <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm border p-6">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-bold text-gray-800">Sales Analytics</h3>
+            <h3 className="text-lg font-bold text-gray-800">Revenue Utilization Analytics</h3>
             <span className="text-xs text-gray-500">Weekly</span>
           </div>
 

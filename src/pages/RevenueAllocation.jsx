@@ -39,6 +39,10 @@ const [savedFinancialYear, setSavedFinancialYear] = useState(null);
 
   const todayDate = new Date().toLocaleDateString("en-GB");
 
+  const userrole = localStorage.getItem("userRole") || user?.role;
+
+
+
   const fetchLatestRevenue = async () => {
     try {
       setPageLoading(true);
@@ -150,7 +154,6 @@ const [savedFinancialYear, setSavedFinancialYear] = useState(null);
   return years;
 };
 
-
   return (
     <div className="p-6 bg-gray-50 min-h-full">
       {/* HEADER */}
@@ -165,12 +168,14 @@ const [savedFinancialYear, setSavedFinancialYear] = useState(null);
             </p>
           </div>
 
+         {userrole !== "Super Admin" && (
           <button
             onClick={() => setOpen(true)}
             className="px-5 py-2 rounded-xl bg-blue-600 text-white font-semibold"
           >
             + Add Revenue
           </button>
+          )}
         </div>
       </div>
 

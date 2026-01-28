@@ -13,6 +13,8 @@ import AddRevenueActivity from "./pages/AddRevenueActivity";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import RevenueAllocationViewSP from "./pages/RevenueAllocationViewSP";
+import RevenueAllocationDisburseAmount from "./pages/RevenueAllocationDisburseAmount";
 
 function ProtectedRoute() {
   const { isLoggedIn } = useSelector((state) => state.auth);
@@ -61,6 +63,10 @@ export default function App() {
       <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/revenue-allocation" element={<RevenueAllocation />} />
+        <Route path="/revenue-allocation-sp" element={<RevenueAllocationViewSP />} />
+   <Route path="/revenue-allocation-disburse" element={<RevenueAllocationDisburseAmount />} />
+
+     
         <Route
         path="/revenue/:revenueId/activity"
        element={<AddRevenueActivity />}

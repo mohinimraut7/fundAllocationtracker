@@ -217,37 +217,41 @@ const { start: minDate, end: maxDate } =
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead className="bg-gray-100">
-          <tr>
-            <th className="px-4 py-3 text-left">Order No</th>
-            <th className="px-4 py-3 text-left">Order Date</th>
-            <th className="px-4 py-3 text-right">Sanctioned</th>
-            <th className="px-4 py-3 text-right">Spent</th>
-            <th className="px-4 py-3 text-right">Pending Amount</th>
-            <th className="px-4 py-3 text-left">Vendor</th>
-            <th className="px-4 py-3 text-left">Bill</th>
+          <tr className="[&>th]:py-2 [&>th]:px-5">
+            <th className="text-left">Order No</th>
+            <th className="text-left">Order Date</th>
+              <th className="text-left">Subject</th>
+            <th className="text-left">Sanctioned Amt.</th>
+            <th className="text-left">Disburse Amount</th>
+            <th className="text-left">Pending Amount</th>
+            <th className="text-left">Vendor</th>
+            <th className="text-left">Bill</th>
           </tr>
         </thead>
 
         <tbody>
           {activities.map((act) => (
-            <tr key={act._id} className="border-t">
-              <td className="px-4 py-3">{act.sanctionedOrderNo}</td>
-              <td className="px-4 py-3">
+            <tr key={act._id} className="border-t [&>td]:p-5">
+              <td className="text-left">{act.sanctionedOrderNo}</td>
+              <td className="text-left">
                 {new Date(act.sanctionedOrderDate).toLocaleDateString("en-GB")}
               </td>
-              <td className="px-4 py-3 text-right">
-                ₹{act.amountSanctioned}
-              </td>
-              <td className="px-4 py-3 text-right">
-                ₹{act.amountSpent}
-              </td>
-              <td className="px-4 py-3 text-right">
-                ₹{act.pendingAmount}
-              </td>
-              <td className="px-4 py-3">
+               <td className="text-left">
                 {act.vendorBeneficiaryDetails}
               </td>
-              <td className="px-4 py-3">
+              <td className="text-left">
+                ₹{act.amountSanctioned}
+              </td>
+              <td className="text-left">
+                ₹{act.amountSpent}
+              </td>
+              <td className="text-left">
+                ₹{act.pendingAmount}
+              </td>
+              <td className="text-left">
+                {act.vendorBeneficiaryDetails}
+              </td>
+              <td className="text-left">
                 <a
                   // href={`http://localhost:5000/${act.billUcUpload}`}
                     href={`${import.meta.env.VITE_FILE_BASE_URL}/${act.billUcUpload}`}
@@ -373,12 +377,25 @@ const { start: minDate, end: maxDate } =
                     />
                   </div>
 
-                 
+                   <div>
+  <label className="block text-sm font-semibold text-gray-700 mb-1">
+    Subject
+  </label>
+  <input
+    type="text"
+    name="activityName"
+    value={form.activityName}
+    onChange={handleChange}
+    placeholder="Enter name"
+    className="w-full px-4 py-3 border rounded-xl outline-none"
+  />
+</div>
 
-                  {/* Amount Spent */}
+                  {/* Amount Spent */} 
+                  {/* this should remove from here ane make new form */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                      Amount Spent (₹)
+                      Disburse Amount (₹)
                     </label>
                     <input
                       type="number"
@@ -404,19 +421,7 @@ const { start: minDate, end: maxDate } =
                   </div>
                 </div>
 
-                  <div>
-  <label className="block text-sm font-semibold text-gray-700 mb-1">
-    Subject
-  </label>
-  <input
-    type="text"
-    name="activityName"
-    value={form.activityName}
-    onChange={handleChange}
-    placeholder="Enter name"
-    className="w-full px-4 py-3 border rounded-xl outline-none"
-  />
-</div>
+                
 
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-1">

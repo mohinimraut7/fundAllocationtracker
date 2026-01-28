@@ -9,6 +9,7 @@ export default function Sidebar({ variant = "vertical" }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
+  console.log("user----",user)
 
   const handleLogout = () => {
     dispatch(logout());
@@ -25,12 +26,211 @@ export default function Sidebar({ variant = "vertical" }) {
 
   // 🔹 MOBILE TOP NAVBAR VERSION
   
+// if (variant === "horizontal") {
+//   return (
+//     <div className="w-full bg-transparent px-4 py-3">
+//       <div className="w-full mx-auto bg-white rounded-full shadow-md px-2 py-2 flex items-center justify-between">
+
+//          {/* 🔹 Logo + App Name (Name NEVER hidden) */}
+//         <div className="flex items-center gap-2">
+//           <div className="flex items-center justify-center h-9 w-9 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold shadow">
+//             ₹
+//           </div>
+//           <span className="text-sm font-semibold text-gray-800">
+//             Fund Tracker
+//           </span>
+//         </div>
+        
+
+//         {/* Dashboard */}
+//         <NavLink
+//           to="/dashboard"
+//           className={({ isActive }) =>
+//             `flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+//              ${
+//                isActive
+//                  ? "bg-blue-200 text-gray-900 shadow"
+//                  : "text-gray-600 hover:bg-gray-100"
+//              }`
+//           }
+//         >
+//           <span>🏠</span>
+//           <span>Home</span>
+//         </NavLink>
+
+//         {/* Revenue */}
+
+
+
+
+//          {user?.role !== "Super Admin" && (
+
+//         <NavLink
+//           to="/revenue-allocation"
+//           className={({ isActive }) =>
+//             `flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+//              ${
+//                isActive
+//                  ? "bg-blue-200 text-gray-900 shadow"
+//                  : "text-gray-600 hover:bg-gray-100"
+//              }`
+//           }
+//         >
+//           <span>💰</span>
+//           <span>Revenue</span>
+//         </NavLink>
+        
+//  )}
+
+
+
+
+//         {/* 🔹 LOGOUT CIRCLE BUTTON WITH ImSwitch ICON */}
+//           <button
+//             onClick={handleLogout}
+//             className="
+//               flex items-center justify-center 
+//               h-10 w-10 
+//               rounded-full 
+//               bg-red-50 
+//               text-red-500 
+//               hover:bg-red-100 
+//               hover:text-red-600 
+//               transition-all duration-200 
+//               shadow-sm
+//             "
+//             title="Logout"
+//           >
+//             <ImSwitch className="h-5 w-5" />
+//           </button>
+
+//       </div>
+//     </div>
+//   );
+// }
+// ========================
+// updated by 28 jan
+
+// if (variant === "horizontal") {
+//   return (
+//     <div className="w-full bg-transparent px-4 py-3">
+//       <div className="w-full mx-auto bg-white rounded-full shadow-md px-2 py-2 flex items-center justify-between">
+
+//         {/* 🔹 Logo + App Name */}
+//         <div className="flex items-center gap-2">
+//           <div className="flex items-center justify-center h-9 w-9 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold shadow">
+//             ₹
+//           </div>
+//           <span className="text-sm font-semibold text-gray-800">
+//             Fund Tracker
+//           </span>
+//         </div>
+
+//         {/* 🔹 Home */}
+//         <NavLink
+//           to="/dashboard"
+//           className={({ isActive }) =>
+//             `flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+//              ${
+//                isActive
+//                  ? "bg-blue-200 text-gray-900 shadow"
+//                  : "text-gray-600 hover:bg-gray-100"
+//              }`
+//           }
+//         >
+//           <span>🏠</span>
+//           <span>Home</span>
+//         </NavLink>
+
+//         {/* 🔹 Revenue Allocation (NOT Super Admin) */}
+//         {user?.role !== "Super Admin" && (
+//           <NavLink
+//             to="/revenue-allocation"
+//             className={({ isActive }) =>
+//               `flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+//                ${
+//                  isActive
+//                    ? "bg-blue-200 text-gray-900 shadow"
+//                    : "text-gray-600 hover:bg-gray-100"
+//                }`
+//             }
+//           >
+//             <span>💰</span>
+//             <span>Revenue Allocation</span>
+//           </NavLink>
+//         )}
+
+//         {/* 🔹 Disburse Allocation (ALL USERS) */}
+//         <NavLink
+//           to="/revenue-allocation-disburse"
+//           className={({ isActive }) =>
+//             `flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+//              ${
+//                isActive
+//                  ? "bg-blue-200 text-gray-900 shadow"
+//                  : "text-gray-600 hover:bg-gray-100"
+//              }`
+//           }
+//         >
+//           <span>💰</span>
+//           <span>Disburse Allocation</span>
+//         </NavLink>
+
+//         {/* 🔹 Revenue Allocation S.P. (ONLY Super Admin) */}
+//         {user?.role === "Super Admin" && (
+//           <NavLink
+//             to="/revenue-allocation-sp"
+//             className={({ isActive }) =>
+//               `flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+//                ${
+//                  isActive
+//                    ? "bg-blue-200 text-gray-900 shadow"
+//                    : "text-gray-600 hover:bg-gray-100"
+//                }`
+//             }
+//           >
+//             <span>💰</span>
+//             <span>Revenue Allocation S.P.</span>
+//           </NavLink>
+//         )}
+
+//         {/* 🔹 Logout */}
+//         <button
+//           onClick={handleLogout}
+//           className="
+//             flex items-center justify-center 
+//             h-10 w-10 
+//             rounded-full 
+//             bg-red-50 
+//             text-red-500 
+//             hover:bg-red-100 
+//             hover:text-red-600 
+//             transition-all duration-200 
+//             shadow-sm
+//           "
+//           title="Logout"
+//         >
+//           <ImSwitch className="h-5 w-5" />
+//         </button>
+
+//       </div>
+//     </div>
+//   );
+// }
+
+// ===========================
 if (variant === "horizontal") {
   return (
     <div className="w-full bg-transparent px-4 py-3">
-      <div className="w-full mx-auto bg-white rounded-full shadow-md px-2 py-2 flex items-center justify-between">
-
-         {/* 🔹 Logo + App Name (Name NEVER hidden) */}
+      <div
+        className="
+          w-full mx-auto bg-white rounded-[5%] shadow-md 
+          px-3 py-3
+          grid grid-cols-2 gap-2
+          md:flex md:items-center md:justify-between
+        "
+      >
+        {/* 🔹 Logo + App Name (Row 1 - col 1) */}
         <div className="flex items-center gap-2">
           <div className="flex items-center justify-center h-9 w-9 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold shadow">
             ₹
@@ -39,13 +239,12 @@ if (variant === "horizontal") {
             Fund Tracker
           </span>
         </div>
-        
 
-        {/* Dashboard */}
+        {/* 🔹 Home (Row 1 - col 2) */}
         <NavLink
           to="/dashboard"
           className={({ isActive }) =>
-            `flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+            `flex items-center justify-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
              ${
                isActive
                  ? "bg-blue-200 text-gray-900 shadow"
@@ -57,16 +256,29 @@ if (variant === "horizontal") {
           <span>Home</span>
         </NavLink>
 
-        {/* Revenue */}
+        {/* 🔹 Revenue Allocation (Row 2 - col 1) */}
+        {user?.role !== "Super Admin" && (
+          <NavLink
+            to="/revenue-allocation"
+            className={({ isActive }) =>
+              `flex items-center justify-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+               ${
+                 isActive
+                   ? "bg-blue-200 text-gray-900 shadow"
+                   : "text-gray-600 hover:bg-gray-100"
+               }`
+            }
+          >
+            <span>💰</span>
+            <span>Revenue</span>
+          </NavLink>
+        )}
 
-
-
-
-         {user?.role !== "Super Admin" && (
+        {/* 🔹 Disburse Allocation (Row 2 - col 2) */}
         <NavLink
-          to="/revenue-allocation"
+          to="/revenue-allocation-disburse"
           className={({ isActive }) =>
-            `flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+            `flex items-center justify-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
              ${
                isActive
                  ? "bg-blue-200 text-gray-900 shadow"
@@ -75,14 +287,29 @@ if (variant === "horizontal") {
           }
         >
           <span>💰</span>
-          <span>Revenue</span>
+          <span>Disburse</span>
         </NavLink>
- )}
 
+        {/* 🔹 Revenue Allocation S.P. (Super Admin only, auto place) */}
+        {user?.role === "Super Admin" && (
+          <NavLink
+            to="/revenue-allocation-sp"
+            className={({ isActive }) =>
+              `flex items-center justify-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+               ${
+                 isActive
+                   ? "bg-blue-200 text-gray-900 shadow"
+                   : "text-gray-600 hover:bg-gray-100"
+               }`
+            }
+          >
+            <span>💰</span>
+            <span>Revenue Allocation S.P.</span>
+          </NavLink>
+        )}
 
-
-
-        {/* 🔹 LOGOUT CIRCLE BUTTON WITH ImSwitch ICON */}
+        {/* 🔹 Logout (Row 3 - full width center) */}
+        <div className="col-span-2 flex justify-center md:col-span-1">
           <button
             onClick={handleLogout}
             className="
@@ -100,7 +327,7 @@ if (variant === "horizontal") {
           >
             <ImSwitch className="h-5 w-5" />
           </button>
-
+        </div>
       </div>
     </div>
   );
@@ -144,20 +371,65 @@ if (variant === "horizontal") {
     <span className="text-lg">💰</span>
     <span>Revenue Allocation</span>
   </NavLink>
-)}
+ )}
+  <NavLink to="/revenue-allocation-disburse" className={linkClass}>
+    <span className="text-lg">💰</span>
+    <span>Disburse Allocation</span>
+  </NavLink>
+
+
+        {user?.role == "Super Admin" && (
+  <NavLink to="/revenue-allocation-sp" className={linkClass}>
+    <span className="text-lg">💰</span>
+    <span>Revenue Allocation S.P.</span>
+  </NavLink>
+ )} 
 
       </nav>
 
       {/* Bottom Profile + Logout */}
       <div className="p-4 border-t">
-        <div className="bg-gray-50 rounded-2xl p-4 mb-3 shadow-sm">
+        {/* <div className="bg-gray-50 rounded-2xl p-4 mb-3 shadow-sm">
           <p className="text-sm font-semibold text-gray-800">
             {user?.name || "User"}
           </p>
           <p className="text-xs text-gray-500">
             Role: {user?.role || "N/A"}
           </p>
-        </div>
+        </div> */}
+        <div className="bg-gray-50 rounded-2xl p-4 mb-3 shadow-sm">
+  {/* NAME */}
+  <p className="text-sm font-semibold text-gray-800">
+    {user?.name || user?.username || "User"}
+  </p>
+
+  {/* ROLE */}
+  <p className="text-xs text-gray-500 mt-1">
+    Role: <b>{user?.role}</b>
+  </p>
+
+  {/* EXTRA INFO ROLE-WISE */}
+  {user?.role === "Collector Office" && (
+    <p className="text-xs text-gray-500 mt-1">
+      {user?.region && <>Region: <b>{user.region}</b></>}
+      {user?.collectorOffice && <> | Office: <b>{user.collectorOffice}</b></>}
+    </p>
+  )}
+
+  {user?.role === "Corporation / NagarPalika" && (
+    <p className="text-xs text-gray-500 mt-1">
+      {user?.district && <>District: <b>{user.district}</b></>}
+      {user?.municipality && <> | <b>{user.municipality}</b></>}
+    </p>
+  )}
+
+  {user?.role === "Grampanchayat" && (
+    <p className="text-xs text-gray-500 mt-1">
+      {user?.district && <>District: <b>{user.district}</b></>}
+    </p>
+  )}
+</div>
+
 
         <button
           onClick={handleLogout}
