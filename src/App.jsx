@@ -11,6 +11,8 @@ import DashboardLayout from "./components/common/DashboardLayout";
 import { loginSuccess } from "./redux/slices/authSlice"; // ✅ import
 import AddRevenueActivity from "./pages/AddRevenueActivity";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ProtectedRoute() {
   const { isLoggedIn } = useSelector((state) => state.auth);
@@ -39,7 +41,17 @@ export default function App() {
   }, [dispatch]);
 
   return (
-    <Routes>
+    <>
+       <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+      />
+
+       <Routes>
       <Route path="/" element={<Navigate to="/login"/>} />
     
       <Route path="/login" element={<Login />} />
@@ -59,6 +71,9 @@ export default function App() {
      
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+    
+    </>
+   
   );
 }
 

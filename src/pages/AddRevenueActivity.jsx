@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate,useLocation  } from "react-router-dom";
 import axiosInstance from "../services/axiosInstance";
+import { toast } from "react-toastify";
+
+
 
 export default function AddRevenueActivity() {
   const { revenueId } = useParams();
@@ -92,17 +95,23 @@ const financialYear = location.state?.financialYear;
       !amountSanctioned ||
       !amountSpent
     ) {
-      alert("Please fill all required fields ❌");
+      // alert("Please fill all required fields ❌");
+      toast.warning("Please fill all required fields ❌");
+
       return;
     }
 
     if (Number(amountSpent) > Number(amountSanctioned)) {
-      alert("Amount Spent cannot exceed Amount Sanctioned ❌");
+      // alert("Amount Spent cannot exceed Amount Sanctioned ❌");
+      toast.warning("Please fill all required fields ❌");
+
       return;
     }
 
     if (!billUcUpload) {
-      alert("Please upload Bill / UC document ✅");
+      // alert("Please upload Bill / UC document ✅");
+      toast.warning("Please upload Bill / UC document ❌");
+
       return;
     }
 
@@ -126,11 +135,23 @@ const financialYear = location.state?.financialYear;
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      alert("Activity saved successfully ✅");
+      // alert("Activity saved successfully ✅");
+      toast.success("Activity saved successfully ✅");
+
       navigate("/revenue-allocation");
-    } catch (error) {
-      alert("Failed to save activity ❌");
-    } finally {
+    } 
+    // catch (error) {
+    //   alert("Failed to save activity ❌");
+    // } 
+    catch (error) {
+  const msg =
+    error?.response?.data?.message ||
+    "Failed to save activity ❌";
+
+  toast.error(msg);
+}
+
+    finally {
       setLoading(false);
     }
   };
@@ -228,7 +249,8 @@ const { start: minDate, end: maxDate } =
               </td>
               <td className="px-4 py-3">
                 <a
-                  href={`http://localhost:5000/${act.billUcUpload}`}
+                  // href={`http://localhost:5000/${act.billUcUpload}`}
+                    href={`${import.meta.env.VITE_FILE_BASE_URL}/${act.billUcUpload}`}
                   target="_blank"
                   rel="noreferrer"
                   className="text-blue-600 font-semibold"
@@ -384,7 +406,7 @@ const { start: minDate, end: maxDate } =
 
                   <div>
   <label className="block text-sm font-semibold text-gray-700 mb-1">
-    Enter Name
+    Subject
   </label>
   <input
     type="text"
@@ -398,7 +420,7 @@ const { start: minDate, end: maxDate } =
 
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-1">
-                    Vendor / Beneficiary Details
+                    Details
                   </label>
                   <textarea
                     name="vendorBeneficiaryDetails"

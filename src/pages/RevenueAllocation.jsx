@@ -46,8 +46,11 @@ const [savedFinancialYear, setSavedFinancialYear] = useState(null);
       const data = Array.isArray(res.data) ? res.data : res.data?.data;
 
       if (data?.length) {
-        const roleWiseData = data.filter((r) => r.role === role);
-        if (roleWiseData.length) {
+        // const roleWiseData = data.filter((r) => r.role === role);
+          const roleWiseData = data
+          .filter((r) => r.role === role)
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          if (roleWiseData.length) {
           const latest = roleWiseData[0];
           setLatestRevenueId(latest._id);
           setSavedRevenue(latest.totalRevenue);
@@ -112,6 +115,7 @@ const [savedFinancialYear, setSavedFinancialYear] = useState(null);
       const d = res.data.data;
       setSavedRevenue(d.totalRevenue);
       setAllocatedAmount(d.allocatedAmount);
+      setSavedFinancialYear(d.financialYear); // ✅ FIX
       setSavedDate(d.date);
       setSavedAttachmentName(d.attachmentName);
       setSavedAttachmentUrl(d.attachmentUrl);
