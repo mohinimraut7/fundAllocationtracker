@@ -180,7 +180,8 @@ const [savedFinancialYear, setSavedFinancialYear] = useState(null);
       </div>
 
       {/* TABLE */}
-      <div className="bg-white rounded-2xl shadow-sm border mt-6 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-sm border mt-6">
+          <div className="w-full overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-gray-50 text-xs uppercase">
             <tr>
@@ -262,6 +263,7 @@ onClick={() =>
             )}
           </tbody>
         </table>
+</div>
       </div>
 
       {/* ================= MODAL ================= */}

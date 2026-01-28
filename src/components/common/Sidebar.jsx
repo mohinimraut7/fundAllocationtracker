@@ -369,12 +369,12 @@ if (variant === "horizontal") {
         {user?.role !== "Super Admin" && (
   <NavLink to="/revenue-allocation" className={linkClass}>
     <span className="text-lg">💰</span>
-    <span>Revenue Allocation</span>
+    <span>Revenue</span>
   </NavLink>
  )}
   <NavLink to="/revenue-allocation-disburse" className={linkClass}>
     <span className="text-lg">💰</span>
-    <span>Disburse Allocation</span>
+    <span>Disburse</span>
   </NavLink>
 
 
