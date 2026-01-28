@@ -370,6 +370,10 @@ export default function RevenueAllocationDisburseAmount() {
   const [loading, setLoading] = useState(false);
   const [filterFY, setFilterFY] = useState("");
 
+const [activityName, setActivityName] = useState("");
+const [disburseDate, setDisburseDate] = useState(
+  new Date().toISOString().split("T")[0]
+);
 
   // ================= FETCH ALL ACTIVITIES =================
   useEffect(() => {
@@ -455,6 +459,8 @@ const handleSearch = () => {
 
       const formData = new FormData();
       formData.append("amountSpent", amount);
+      formData.append("activityName", activityName);
+formData.append("disburseDate", disburseDate);
       if (billUcUpload) formData.append("billUcUpload", billUcUpload);
 
       await axiosInstance.put(
@@ -579,9 +585,9 @@ const handleSearch = () => {
                 <th className="px-4 py-3">FY</th>
                 <th className="px-4 py-3">Sanction No</th>
                 <th className="px-4 py-3">Sanctioned</th>
-                <th className="px-4 py-3">Spent</th>
+                <th className="px-4 py-3">Disburse Amt.</th>
                 <th className="px-4 py-3">Pending</th>
-                <th className="px-4 py-3">Vendor</th>
+                <th className="px-4 py-3">Details</th>
                 <th className="px-4 py-3">Action</th>
               </tr>
             </thead>
@@ -609,6 +615,8 @@ const handleSearch = () => {
                         disabled={a.pendingAmount === 0}
                         onClick={() => {
                           setSelectedActivity(a);
+                           setActivityName(a.vendorBeneficiaryDetails || "");
+                          setDisburseDate(new Date().toISOString().split("T")[0]);
                           setOpenModal(true);
                         }}
                         className="px-3 py-1.5 text-xs rounded-lg bg-green-600 text-white disabled:bg-gray-400"
@@ -640,7 +648,7 @@ const handleSearch = () => {
 
             <div className="bg-gray-50 border rounded-xl p-3 mb-3">
               <p className="text-sm">
-                <b>Vendor:</b>{" "}
+                <b>Details:</b>{" "}
                 {selectedActivity.vendorBeneficiaryDetails}
               </p>
               <p className="text-sm mt-1">
@@ -651,6 +659,33 @@ const handleSearch = () => {
                 )}
               </p>
             </div>
+            {/* 🔹 Subject */}
+<div className="mb-3">
+  <label className="block text-sm font-semibold text-gray-700 mb-1">
+    Subject
+  </label>
+  <input
+    type="text"
+    value={activityName}
+    onChange={(e) => setActivityName(e.target.value)}
+    placeholder="Enter subject"
+    className="w-full px-4 py-2 border rounded-lg outline-none"
+  />
+</div>
+
+{/* 🔹 Disburse Date */}
+<div className="mb-3">
+  <label className="block text-sm font-semibold text-gray-700 mb-1">
+    Disburse Date
+  </label>
+  <input
+    type="date"
+    value={disburseDate}
+    onChange={(e) => setDisburseDate(e.target.value)}
+    className="w-full px-4 py-2 border rounded-lg outline-none"
+  />
+</div>
+
 
             {/* Payment Type */}
             <div className="mb-3">
