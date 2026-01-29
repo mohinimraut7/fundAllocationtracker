@@ -175,7 +175,7 @@ export default function Login() {
               </div>
 
               <div className="text-center text-white/80 text-xs">
-                © {new Date().getFullYear()} Fund Tracker System
+                © {new Date().getFullYear()} Fund Tracker System 
               </div>
             </form>
           </div>
