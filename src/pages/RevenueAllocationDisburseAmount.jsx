@@ -1,355 +1,6 @@
-// import React, { useState } from "react";
-// import { useParams, useLocation, useNavigate } from "react-router-dom";
-// import axiosInstance from "../services/axiosInstance";
-
-// export default function RevenueAllocationDisburseAmount() {
-//   const { revenueId } = useParams();
-//   const location = useLocation();
-//   const navigate = useNavigate();
-
-//   const financialYear = location.state?.financialYear;
-
-//   const [sanctionedOrderNo, setSanctionedOrderNo] = useState("");
-//   const [activity, setActivity] = useState(null);
-//   const [disburseAmount, setDisburseAmount] = useState("");
-//   const [billUcUpload, setBillUcUpload] = useState(null);
-//   const [loading, setLoading] = useState(false);
-
-//   // 🔍 Fetch existing activity
-//   const handleSearch = async () => {
-//     if (!sanctionedOrderNo) return alert("Sanctioned Order No टाका");
-
-//     try {
-//       const res = await axiosInstance.get(
-//         `/revenue/${sanctionedOrderNo}`
-//       );
-
-//       setActivity(res.data.data);
-//     } catch (err) {
-//       alert("हा Sanctioned Order No सापडला नाही ❌");
-//       setActivity(null);
-//     }
-//   };
-
-//   // 💰 Disburse pending amount (UPDATE)
-//   const handleDisburse = async () => {
-//     if (!disburseAmount) return alert("Disburse amount टाका");
-
-//     if (Number(disburseAmount) > activity.pendingAmount)
-//       return alert("Pending पेक्षा जास्त amount चालणार नाही ❌");
-
-//     try {
-//       setLoading(true);
-
-//       const formData = new FormData();
-//       formData.append("amountSpent", disburseAmount);
-//       if (billUcUpload) formData.append("billUcUpload", billUcUpload);
-
-//       const res = await axiosInstance.put(
-//         `/revenue/${revenueId}/activity/${sanctionedOrderNo}`,
-//         formData,
-//         { headers: { "Content-Type": "multipart/form-data" } }
-//       );
-
-//       alert("Amount disbursed successfully ✅");
-//       navigate(-1);
-//     } catch (err) {
-//       alert("Server error ❌");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div className="p-6 bg-gray-50 min-h-full">
-//       <div className="bg-white rounded-2xl shadow border p-6 max-w-xl mx-auto">
-//         <h1 className="text-xl font-bold text-gray-800 mb-1">
-//           Disburse Amount
-//         </h1>
-
-//         <p className="text-xs text-gray-500 mb-4">
-//           Financial Year: <b>{financialYear}</b>
-//         </p>
-
-//         {/* 🔎 Search Order No */}
-//         <div className="mb-4">
-//           <label className="block text-sm font-semibold mb-1">
-//             Sanctioned Order No
-//           </label>
-
-//           <div className="flex gap-2">
-//             <input
-//               value={sanctionedOrderNo}
-//               onChange={(e) => setSanctionedOrderNo(e.target.value)}
-//               className="flex-1 px-4 py-2 border rounded-lg"
-//               placeholder="aa/11/123"
-//             />
-
-//             <button
-//               onClick={handleSearch}
-//               className="px-4 py-2 bg-blue-600 text-white rounded-lg"
-//             >
-//               Search
-//             </button>
-//           </div>
-//         </div>
-
-//         {/* 📄 Activity Details */}
-//         {activity && (
-//           <>
-//             <div className="bg-gray-50 border rounded-xl p-4 mb-4 space-y-1">
-//               <p className="text-sm">
-//                 <b>Sanctioned:</b> ₹{" "}
-//                 {activity.amountSanctioned.toLocaleString("en-IN")}
-//               </p>
-//               <p className="text-sm">
-//                 <b>Spent:</b> ₹{" "}
-//                 {activity.amountSpent.toLocaleString("en-IN")}
-//               </p>
-//               <p className="text-sm font-semibold text-green-700">
-//                 Pending: ₹{" "}
-//                 {activity.pendingAmount.toLocaleString("en-IN")}
-//               </p>
-//             </div>
-
-//             {/* 💸 Disbursement */}
-//             <div className="space-y-4">
-//               <div>
-//                 <label className="block text-sm font-semibold mb-1">
-//                   Disburse Amount
-//                 </label>
-//                 <input
-//                   type="number"
-//                   value={disburseAmount}
-//                   onChange={(e) => setDisburseAmount(e.target.value)}
-//                   className="w-full px-4 py-2 border rounded-lg"
-//                 />
-//               </div>
-
-//               <div>
-//                 <label className="block text-sm font-semibold mb-1">
-//                   Upload Bill / UC
-//                 </label>
-//                 <input
-//                   type="file"
-//                   accept=".pdf,.jpg,.png"
-//                   onChange={(e) =>
-//                     setBillUcUpload(e.target.files?.[0] || null)
-//                   }
-//                 />
-//               </div>
-
-//               <button
-//                 disabled={loading}
-//                 onClick={handleDisburse}
-//                 className={`w-full py-2 rounded-lg text-white font-semibold ${
-//                   loading
-//                     ? "bg-gray-400"
-//                     : "bg-green-600 hover:bg-green-700"
-//                 }`}
-//               >
-//                 {loading ? "Processing..." : "Disburse Amount"}
-//               </button>
-//             </div>
-//           </>
-//         )}
-//       </div>
-//     </div>
-//   );
-// }
-
-
-// ===========================
-
-// import React, { useState } from "react";
-// import { useLocation, useNavigate } from "react-router-dom";
-// import axiosInstance from "../services/axiosInstance";
-
-// export default function RevenueAllocationDisburseAmount() {
-//   const location = useLocation();
-//   const navigate = useNavigate();
-
-//   const financialYear = location.state?.financialYear;
-
-//   const [sanctionedOrderNo, setSanctionedOrderNo] = useState("");
-//   const [activity, setActivity] = useState(null);
-//   const [revenueId, setRevenueId] = useState(null);
-
-//   const [disburseAmount, setDisburseAmount] = useState("");
-//   const [billUcUpload, setBillUcUpload] = useState(null);
-//   const [loading, setLoading] = useState(false);
-
-//   // ================= SEARCH SANCTIONED ORDER =================
-//   const handleSearch = async () => {
-//     if (!sanctionedOrderNo) {
-//       alert("Sanctioned Order No टाका");
-//       return;
-//     }
-
-//     try {
-//       const res = await axiosInstance.get(
-//         `/revenue/${encodeURIComponent(sanctionedOrderNo)}`
-//       );
-
-//       // backend returns ARRAY
-//       const firstMatch = res.data.data[0];
-
-//       setActivity(firstMatch.activity);
-//       setRevenueId(firstMatch.revenueId);
-//     } catch (err) {
-//       alert("हा Sanctioned Order No सापडला नाही ❌");
-//       setActivity(null);
-//       setRevenueId(null);
-//     }
-//   };
-
-//   // ================= DISBURSE AMOUNT =================
-//   const handleDisburse = async () => {
-//     if (!disburseAmount) {
-//       alert("Disburse amount टाका");
-//       return;
-//     }
-
-//     if (Number(disburseAmount) > activity.pendingAmount) {
-//       alert("Pending पेक्षा जास्त amount चालणार नाही ❌");
-//       return;
-//     }
-
-//     try {
-//       setLoading(true);
-
-//       const formData = new FormData();
-//       formData.append("amountSpent", disburseAmount);
-//       if (billUcUpload) {
-//         formData.append("billUcUpload", billUcUpload);
-//       }
-
-
-//       await axiosInstance.put(
-//         `/revenue/activity/${encodeURIComponent(
-//           sanctionedOrderNo
-//         )}`,
-//         formData,
-//         { headers: { "Content-Type": "multipart/form-data" } }
-//       );
-
-//       alert("Amount disbursed successfully ✅");
-//       navigate(-1);
-//     } catch (err) {
-//       alert("Server error ❌");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div className="p-6 bg-gray-50 min-h-full">
-//       <div className="bg-white rounded-2xl shadow border p-6 max-w-xl mx-auto">
-//         <h1 className="text-xl font-bold text-gray-800 mb-1">
-//           Disburse Amount
-//         </h1>
-
-//         <p className="text-xs text-gray-500 mb-4">
-//           Financial Year: <b>{financialYear}</b>
-//         </p>
-
-//         {/* ================= SEARCH ================= */}
-//         <div className="mb-4">
-//           <label className="block text-sm font-semibold mb-1">
-//             Sanctioned Order No
-//           </label>
-
-//           <div className="flex gap-2">
-//             <input
-//               value={sanctionedOrderNo}
-//               onChange={(e) => setSanctionedOrderNo(e.target.value)}
-//               className="flex-1 px-4 py-2 border rounded-lg"
-//               placeholder="aa/11/123"
-//             />
-
-//             <button
-//               onClick={handleSearch}
-//               className="px-4 py-2 bg-blue-600 text-white rounded-lg"
-//             >
-//               Search
-//             </button>
-//           </div>
-//         </div>
-
-//         {/* ================= ACTIVITY DETAILS ================= */}
-//         {activity && (
-//           <>
-//             <div className="bg-gray-50 border rounded-xl p-4 mb-4 space-y-1">
-//               <p className="text-sm">
-//                 <b>Sanctioned:</b>{" "}
-//                 ₹ {activity.amountSanctioned.toLocaleString("en-IN")}
-//               </p>
-
-//               {/* <p className="text-sm">
-//                 <b>Spent:</b>{" "}
-//                 ₹ {activity.amountSpent.toLocaleString("en-IN")}
-//               </p>
-
-//               <p className="text-sm font-semibold text-green-700">
-//                 Pending: ₹ {activity.pendingAmount.toLocaleString("en-IN")}
-//               </p> */}
-//               <p className="text-sm">
-//                 <b>Subject:</b>{" "}
-//                 ₹ {activity.vendorBeneficiaryDetails}
-//               </p>
-//             </div>
-
-//             {/* ================= DISBURSE ================= */}
-//             <div className="space-y-4">
-//               <div>
-//                 <label className="block text-sm font-semibold mb-1">
-//                   Disburse Amount
-//                 </label>
-//                 <input
-//                   type="number"
-//                   value={disburseAmount}
-//                   onChange={(e) => setDisburseAmount(e.target.value)}
-//                   className="w-full px-4 py-2 border rounded-lg"
-//                 />
-//               </div>
-
-//               <div>
-//                 <label className="block text-sm font-semibold mb-1">
-//                   Upload Bill / UC
-//                 </label>
-//                 <input
-//                   type="file"
-//                   accept=".pdf,.jpg,.png"
-//                   onChange={(e) =>
-//                     setBillUcUpload(e.target.files?.[0] || null)
-//                   }
-//                 />
-//               </div>
-
-//               <button
-//                 disabled={loading}
-//                 onClick={handleDisburse}
-//                 className={`w-full py-2 rounded-lg text-white font-semibold ${
-//                   loading
-//                     ? "bg-gray-400"
-//                     : "bg-green-600 hover:bg-green-700"
-//                 }`}
-//               >
-//                 {loading ? "Processing..." : "Disburse Amount"}
-//               </button>
-//             </div>
-//           </>
-//         )}
-//       </div>
-//     </div>
-//   );
-// }
-
-
-// ======================
-
-
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import { useLocation } from "react-router-dom";
 import axiosInstance from "../services/axiosInstance";
 import { FiSearch } from "react-icons/fi";
@@ -377,6 +28,7 @@ const [disburseDate, setDisburseDate] = useState(
 );
 const [fileError, setFileError] = useState("");
 
+  const { user } = useSelector((state) => state.auth);
 
   // ================= FETCH ALL ACTIVITIES =================
   useEffect(() => {
@@ -628,7 +280,7 @@ formData.append("disburseDate", disburseDate);
                 <th className="py-3 text-left pl-5">Disburse Amt.</th>
                 <th className="py-3 text-left pl-5">Pending</th>
                 <th className="py-3 text-left pl-5">Details</th>
-                <th className="py-3 text-left pl-5">Action</th>
+                 {user?.role !== "Super Admin" &&<th className="py-3 text-left pl-5">Action</th>}
               </tr>
             </thead>
 
@@ -648,7 +300,7 @@ formData.append("disburseDate", disburseDate);
                       ₹ {a.pendingAmount.toLocaleString("en-IN")}
                     </td>
                     <td className="px-4 py-3">
-                      {a.vendorBeneficiaryDetails}
+                      {a.vendorBeneficiaryDetails || "-"}
                     </td>
                     <td className="px-4 py-3">
                       {/* <button
@@ -664,7 +316,7 @@ formData.append("disburseDate", disburseDate);
                         Disburse
                       </button> */}
 
-                      <td className="px-4 py-3">
+                      {/* <td className="px-4 py-3">
   {isLastRowOfSanction(filteredActivities, index, a) && (
     <button
       disabled={a.pendingAmount === 0}
@@ -679,7 +331,32 @@ formData.append("disburseDate", disburseDate);
       Disburse
     </button>
   )}
-</td>
+</td> */}
+
+
+<td className="px-4 py-3">
+  {user?.role !== "Super Admin" &&
+    isLastRowOfSanction(filteredActivities, index, a) ? (
+      <button
+        disabled={a.pendingAmount === 0}
+        onClick={() => {
+          setSelectedActivity(a);
+          setActivityName(a.vendorBeneficiaryDetails || "");
+          setDisburseDate(new Date().toISOString().split("T")[0]);
+          setOpenModal(true);
+        }}
+        className="px-3 py-1.5 text-xs rounded-lg bg-green-600 text-white disabled:bg-gray-400"
+      >
+        Disburse 
+      </button>
+    ):"-"
+  }
+</td>  
+
+  
+
+
+
 
                     </td>
                   </tr>
