@@ -146,7 +146,7 @@
     }
 
     const roleMap = {
-      collector: "Collector Office",
+      collector: "Collector Offic",
       corporation: "Corporation / NagarPalika",
       grampanchayat: "Grampanchayat",
     };
