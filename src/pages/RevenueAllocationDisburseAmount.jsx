@@ -582,13 +582,13 @@ formData.append("disburseDate", disburseDate);
           <table className="min-w-[1000px] w-full text-sm">
             <thead className="bg-gray-50 text-xs uppercase">
               <tr>
-                <th className="py-3 textAlign">FY</th>
-                <th className="py-3">Sanction No</th>
-                <th className="py-3">Sanctioned</th>
-                <th className="py-3">Disburse Amt.</th>
-                <th className="py-3">Pending</th>
-                <th className="py-3">Details</th>
-                <th className="py-3">Action</th>
+                <th className="py-3 text-left pl-5">FY</th>
+                <th className="py-3 text-left pl-5">Sanction No</th>
+                <th className="py-3 text-left pl-5">Sanctioned</th>
+                <th className="py-3 text-left pl-5">Disburse Amt.</th>
+                <th className="py-3 text-left pl-5">Pending</th>
+                <th className="py-3 text-left pl-5">Details</th>
+                <th className="py-3 text-left pl-5">Action</th>
               </tr>
             </thead>
 
