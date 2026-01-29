@@ -374,11 +374,28 @@ const [activityName, setActivityName] = useState("");
 const [disburseDate, setDisburseDate] = useState(
   new Date().toISOString().split("T")[0]
 );
+const [fileError, setFileError] = useState("");
+
 
   // ================= FETCH ALL ACTIVITIES =================
   useEffect(() => {
     fetchAllActivities();
   }, []);
+
+
+  const isLastRowOfSanction = (list, index, row) => {
+  const sameSanctionRows = list.filter(
+    (a) =>
+      a.sanctionedOrderNo === row.sanctionedOrderNo &&
+      a.financialYear === row.financialYear
+  );
+
+  // last element of that group
+  const last = sameSanctionRows[sameSanctionRows.length - 1];
+
+  return last?._id === row._id;
+};
+
 
   const fetchAllActivities = async () => {
     try {
@@ -594,7 +611,7 @@ formData.append("disburseDate", disburseDate);
 
             <tbody>
               {filteredActivities.length ? (
-                filteredActivities.map((a) => (
+                filteredActivities.map((a,index) => (
                   <tr key={a._id} className="border-t">
                     <td className="px-4 py-3">{a.financialYear}</td>
                     <td className="px-4 py-3">{a.sanctionedOrderNo}</td>
@@ -611,7 +628,7 @@ formData.append("disburseDate", disburseDate);
                       {a.vendorBeneficiaryDetails}
                     </td>
                     <td className="px-4 py-3">
-                      <button
+                      {/* <button
                         disabled={a.pendingAmount === 0}
                         onClick={() => {
                           setSelectedActivity(a);
@@ -622,7 +639,25 @@ formData.append("disburseDate", disburseDate);
                         className="px-3 py-1.5 text-xs rounded-lg bg-green-600 text-white disabled:bg-gray-400"
                       >
                         Disburse
-                      </button>
+                      </button> */}
+
+                      <td className="px-4 py-3">
+  {isLastRowOfSanction(filteredActivities, index, a) && (
+    <button
+      disabled={a.pendingAmount === 0}
+      onClick={() => {
+        setSelectedActivity(a);
+        setActivityName(a.vendorBeneficiaryDetails || "");
+        setDisburseDate(new Date().toISOString().split("T")[0]);
+        setOpenModal(true);
+      }}
+      className="px-3 py-1.5 text-xs rounded-lg bg-green-600 text-white disabled:bg-gray-400"
+    >
+      Disburse
+    </button>
+  )}
+</td>
+
                     </td>
                   </tr>
                 ))
@@ -730,6 +765,7 @@ formData.append("disburseDate", disburseDate);
               className="w-full px-4 py-2 border rounded-lg mb-3"
             />
 
+{/* *** */}
             {/* Upload */}
             <input
               type="file"
