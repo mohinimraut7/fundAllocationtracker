@@ -50,9 +50,17 @@ export default function Login() {
       }
 
       const userPayload = {
-        id: data.user.id,
+        // id: data.user.id,
+        // username: data.user.username,
+        // role: data.user.role,
+         id: data.user.id,
+        name: data.user.name,
         username: data.user.username,
         role: data.user.role,
+       region: data.user.region,
+      collectorOffice: data.user.collectorOffice,
+      district: data.user.district,
+       municipality: data.user.municipality,
       };
 
       // ✅ token save (जर backend देत असेल तर)

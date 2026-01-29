@@ -239,6 +239,9 @@ if (variant === "horizontal") {
             Fund Tracker
           </span>
         </div>
+        {/* 🔹 Logo + App Name + User Info */}
+
+
 
         {/* 🔹 Home (Row 1 - col 2) */}
         <NavLink
@@ -309,7 +312,7 @@ if (variant === "horizontal") {
         )}
 
         {/* 🔹 Logout (Row 3 - full width center) */}
-        <div className="col-span-2 flex justify-center md:col-span-1">
+        {/* <div className="col-span-2 flex justify-center md:col-span-1">
           <button
             onClick={handleLogout}
             className="
@@ -327,7 +330,77 @@ if (variant === "horizontal") {
           >
             <ImSwitch className="h-5 w-5" />
           </button>
-        </div>
+        </div> */}
+{/* 🔹 User Info (LEFT) + Logout (RIGHT) */}
+<div className="col-span-2 flex items-center justify-between md:col-span-1">
+
+  
+
+
+  <div className="flex flex-col leading-tight text-left whitespace-nowrap">
+
+  {/* 🔹 Collector Office */}
+  {user?.role === "Collector Office" && user?.collectorOffice && (
+    <span className="text-[11px] text-gray-600 font-semibold">
+      <b className="text-gray-800">Collector Office</b>
+      <span className="mx-1">:</span>
+      <b className="text-gray-700">{user.collectorOffice}</b>
+    </span>
+  )}
+
+  {/* 🔹 Corporation / NagarPalika */}
+  {user?.role === "Corporation / NagarPalika" && (
+    <span className="text-[11px] text-gray-600 font-semibold">
+      <b className="text-gray-800">Corporation</b>
+      {user?.district && (
+        <>
+          <span className="mx-1">:</span>
+          <b className="text-gray-700">{user.district}</b>
+        </>
+      )}
+      {user?.municipality && (
+        <>
+          <span className="mx-1">|</span>
+          <b className="text-gray-700">{user.municipality}</b>
+        </>
+      )}
+    </span>
+  )}
+
+  {/* 🔹 Grampanchayat */}
+  {user?.role === "Grampanchayat" && user?.district && (
+    <span className="text-[11px] text-gray-600 font-semibold">
+      <b className="text-gray-800">Grampanchayat</b>
+      <span className="mx-1">:</span>
+      <b className="text-gray-700">{user.district}</b>
+    </span>
+  )}
+
+</div>
+
+
+  {/* 🔹 LOGOUT BUTTON */}
+  <button
+    onClick={handleLogout}
+    className="
+      flex items-center justify-center 
+      h-10 w-10 
+      rounded-full 
+      bg-red-50 
+      text-red-500 
+      hover:bg-red-100 
+      hover:text-red-600 
+      transition-all duration-200 
+      shadow-sm
+    "
+    title="Logout"
+  >
+    <ImSwitch className="h-5 w-5" />
+  </button>
+
+</div>
+
+
       </div>
     </div>
   );
@@ -355,10 +428,16 @@ if (variant === "horizontal") {
 
       {/* Menu */}
       <nav className="flex-1 px-4 py-6 flex flex-col gap-2">
-        <NavLink to="/dashboard" className={linkClass}>
+        {/* <NavLink to="/dashboard" className={linkClass}>
           <span className="text-lg">🏠</span>
           <span>Dashboard</span>
-        </NavLink>
+        </NavLink> */}
+
+        <NavLink to="/dashboard" className={linkClass}>
+  <span className="text-lg">🏠</span>
+  <span>Dashboard</span>
+</NavLink>
+
 
         {/* <NavLink to="/revenue-allocation" className={linkClass}>
           <span className="text-lg">💰</span>
@@ -405,7 +484,7 @@ if (variant === "horizontal") {
 
   {/* ROLE */}
   <p className="text-xs text-gray-500 mt-1">
-    Role: <b>{user?.role}</b>
+    <b>{user?.role}</b>
   </p>
 
   {/* EXTRA INFO ROLE-WISE */}

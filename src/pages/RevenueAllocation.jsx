@@ -163,9 +163,9 @@ const [savedFinancialYear, setSavedFinancialYear] = useState(null);
             <h1 className="text-xl font-bold text-gray-800">
               Revenue Allocation
             </h1>
-            <p className="text-xs text-gray-500">
+            {/* <p className="text-xs text-gray-500">
               Logged Role: <b>{role}</b>
-            </p>
+            </p> */}
           </div>
 
          {userrole !== "Super Admin" && (
