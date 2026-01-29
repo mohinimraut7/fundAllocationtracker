@@ -352,6 +352,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axiosInstance from "../services/axiosInstance";
+import { FiSearch } from "react-icons/fi";
 
 export default function RevenueAllocationDisburseAmount() {
   const location = useLocation();
@@ -560,7 +561,7 @@ formData.append("disburseDate", disburseDate);
   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
 
     {/* 🔍 Sanctioned Order No */}
-    <div className="flex gap-3">
+    {/* <div className="flex gap-3">
       <input
         value={sanctionedOrderNo}
         onChange={(e) => setSanctionedOrderNo(e.target.value)}
@@ -571,9 +572,31 @@ formData.append("disburseDate", disburseDate);
         onClick={handleSearch}
         className="px-5 py-2 bg-blue-600 text-white rounded-lg"
       >
-        Search
+        Search----
       </button>
-    </div>
+    </div> */}
+
+
+    <div className="flex gap-2">
+  <input
+    value={sanctionedOrderNo}
+    onChange={(e) => setSanctionedOrderNo(e.target.value)}
+    className="flex-1 px-4 py-2 border rounded-lg"
+    placeholder="aa/11/123"
+  />
+
+  <button
+    onClick={handleSearch}
+    className="px-4 py-2 bg-blue-600 text-white rounded-lg flex items-center justify-center"
+  >
+    {/* Mobile icon */}
+    <FiSearch className="block sm:hidden text-xl" />
+
+    {/* Desktop text */}
+    <span className="hidden sm:block">Search</span>
+  </button>
+</div>
+
 
     {/* 📅 Financial Year Dropdown */}
     <select
