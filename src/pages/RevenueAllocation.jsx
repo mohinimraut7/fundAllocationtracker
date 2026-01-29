@@ -224,7 +224,8 @@ const [savedFinancialYear, setSavedFinancialYear] = useState(null);
                 </td>
                 <td className="px-6 py-4">
                   <a
-                    href={`http://localhost:5000${savedAttachmentUrl}`}
+                    href={`${import.meta.env.VITE_FILE_BASE_URL}/${savedAttachmentUrl}`}
+                    // href={`http://localhost:5000${savedAttachmentUrl}`}
                     target="_blank"
                     rel="noreferrer"
                     className="text-blue-600 hover:underline"

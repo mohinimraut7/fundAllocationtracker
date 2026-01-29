@@ -156,7 +156,8 @@ export default function RevenueAllocationViewSP() {
                 <td>₹{r.remainingAmount.toLocaleString("en-IN")}</td>
                 <td>
                   <a
-                    href={`http://localhost:5000${r.attachmentUrl}`}
+                    href={`${import.meta.env.VITE_FILE_BASE_URL}/${r.attachmentUrl}`}
+                    // href={`http://localhost:5000${r.attachmentUrl}`}
                     target="_blank"
                     rel="noreferrer"
                     className="text-blue-600 font-semibold"
