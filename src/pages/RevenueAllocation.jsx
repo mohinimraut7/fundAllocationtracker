@@ -153,6 +153,12 @@ const [savedFinancialYear, setSavedFinancialYear] = useState(null);
 
   return years;
 };
+const buildFileUrl = (base, path) => {
+  if (!base || !path) return "#";
+
+  return `${base.replace(/\/$/, "")}/${path.replace(/^\//, "")}`;
+};
+
 
   return (
     <div className="p-6 bg-gray-50 min-h-full">
@@ -223,7 +229,7 @@ const [savedFinancialYear, setSavedFinancialYear] = useState(null);
                 
                 </td>
                 <td className="px-6 py-4">
-                  <a
+                  {/* <a
                     href={`${import.meta.env.VITE_FILE_BASE_URL}/${savedAttachmentUrl}`}
                     // href={`http://localhost:5000${savedAttachmentUrl}`}
                     target="_blank"
@@ -231,7 +237,18 @@ const [savedFinancialYear, setSavedFinancialYear] = useState(null);
                     className="text-blue-600 hover:underline"
                   >
                     {savedAttachmentName}
-                  </a>
+                  </a> */}
+<a
+  href={buildFileUrl(import.meta.env.VITE_FILE_BASE_URL, savedAttachmentUrl)}
+  target="_blank"
+  rel="noreferrer"
+  className="text-blue-600 hover:underline"
+>
+  {savedAttachmentName}
+</a>
+
+
+
                 </td>
                  <td className="px-6 py-4">
     <button
