@@ -17,8 +17,9 @@ export default function AddRevenueActivity() {
   const [form, setForm] = useState({
     sanctionedOrderNo: "",
     sanctionedOrderDate: "",
-    amountSanctioned: "",
-    amountSpent: "",
+    amountSanctioned: 0,
+    amountSpent: 0,
+      activityName: "",            // ✅ ADD THIS
     vendorBeneficiaryDetails: "",
     billUcUpload: null,
   });
@@ -28,7 +29,7 @@ export default function AddRevenueActivity() {
   const todayDate = new Date().toLocaleDateString("en-GB");
 
   const location = useLocation();
-  console.log("ocation.state",location.state)
+  // console.log("ocation.state",location.state)
 const financialYear = location.state?.financialYear;
 
 
@@ -85,15 +86,15 @@ const financialYear = location.state?.financialYear;
       sanctionedOrderNo,
       sanctionedOrderDate,
       amountSanctioned,
-      amountSpent,
+      // amountSpent,
       billUcUpload,
     } = form;
 
     if (
       !sanctionedOrderNo ||
       !sanctionedOrderDate ||
-      !amountSanctioned ||
-      !amountSpent
+      !amountSanctioned 
+      // !amountSpent
     ) {
       // alert("Please fill all required fields ❌");
       toast.warning("Please fill all required fields ❌");
@@ -101,12 +102,10 @@ const financialYear = location.state?.financialYear;
       return;
     }
 
-    if (Number(amountSpent) > Number(amountSanctioned)) {
-      // alert("Amount Spent cannot exceed Amount Sanctioned ❌");
-      toast.warning("Please fill all required fields ❌");
-
-      return;
-    }
+    // if (Number(amountSpent) > Number(amountSanctioned)) {
+    //   toast.warning("Please fill all required fields ❌");
+    //   return;
+    // }
 
     if (!billUcUpload) {
       // alert("Please upload Bill / UC document ✅");
@@ -123,13 +122,13 @@ const financialYear = location.state?.financialYear;
       formData.append("sanctionedOrderNo", sanctionedOrderNo);
       formData.append("sanctionedOrderDate", sanctionedOrderDate);
       formData.append("amountSanctioned", amountSanctioned);
-      formData.append("amountSpent", amountSpent);
+      formData.append("amountSpent",0);
       formData.append(
         "vendorBeneficiaryDetails",
         form.vendorBeneficiaryDetails,
       );
       formData.append("billUcUpload", billUcUpload);
-      formData.append("leftoverAmount", leftoverAmount);
+      formData.append("leftoverAmount",0);
 
       await axiosInstance.post("/revenue/addActivity", formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -393,7 +392,7 @@ const { start: minDate, end: maxDate } =
 
                   {/* Amount Spent */} 
                   {/* this should remove from here ane make new form */}
-                  <div>
+                  {/* <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-1">
                       Disburse Amount (₹)
                     </label>
@@ -405,10 +404,10 @@ const { start: minDate, end: maxDate } =
                       className="w-full px-4 py-3 border rounded-xl outline-none"
                       min="0"
                     />
-                  </div>
+                  </div> */}
 
                   {/* Leftover Amount */}
-                  <div className="md:col-span-2">
+                  {/* <div className="md:col-span-2">
                     <label className="block text-sm font-semibold text-gray-700 mb-1">
                       Leftover Amount (₹)
                     </label>
@@ -418,7 +417,7 @@ const { start: minDate, end: maxDate } =
                       readOnly
                       className="w-full px-4 py-3 border rounded-xl outline-none bg-gray-100"
                     />
-                  </div>
+                  </div> */}
                 </div>
 
                 

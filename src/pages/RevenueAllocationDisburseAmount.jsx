@@ -153,8 +153,13 @@ formData.append("disburseDate", disburseDate);
             : a
         );
 
-      setActivities(updateFn);
-      setFilteredActivities(updateFn);
+      // setActivities(updateFn);
+      // setFilteredActivities(updateFn);
+
+
+      setActivities((prev) => updateFn(prev));
+setFilteredActivities((prev) => updateFn(prev));
+
 
       setOpenModal(false);
       setDisburseAmount("");
@@ -499,6 +504,7 @@ const handleRefresh = () => {
               </button>
 
               <button
+              type="button"   // ✅ VERY IMPORTANT
                 onClick={handleDisburse}
                 disabled={loading}
                 className={`px-4 py-2 rounded-lg text-white ${
