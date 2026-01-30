@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useLocation } from "react-router-dom";
 import axiosInstance from "../services/axiosInstance";
-import { FiSearch } from "react-icons/fi";
+import { FiSearch,FiRefreshCw  } from "react-icons/fi";
 
 export default function RevenueAllocationDisburseAmount() {
   const location = useLocation();
@@ -185,6 +185,12 @@ formData.append("disburseDate", disburseDate);
   return years;
 };
 
+const handleRefresh = () => {
+  setSanctionedOrderNo("");
+  setFilterFY("");
+  setFilteredActivities(activities);
+};
+
 
   return (
     <div className="p-6 bg-gray-50 min-h-full">
@@ -247,6 +253,15 @@ formData.append("disburseDate", disburseDate);
     {/* Desktop text */}
     <span className="hidden sm:block">Search</span>
   </button>
+ <button
+    onClick={handleRefresh}
+    className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 flex items-center justify-center"
+    title="Refresh"
+  >
+    <FiRefreshCw className="text-xl" />
+  </button>
+
+
 </div>
 
 
