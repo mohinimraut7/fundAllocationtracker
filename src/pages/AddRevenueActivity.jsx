@@ -224,7 +224,7 @@ const { start: minDate, end: maxDate } =
             <th className="text-left">Sanctioned Amt.</th>
             <th className="text-left">Disburse Amount</th>
             <th className="text-left">Pending Amount</th>
-            <th className="text-left">Vendor</th>
+            <th className="text-left">Details</th>
             <th className="text-left">Bill</th>
           </tr>
         </thead>

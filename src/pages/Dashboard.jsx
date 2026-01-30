@@ -395,12 +395,43 @@
 // powerbi
 
 
+
+
+// export default function Dashboard() {
+//   return (
+//     <div className="w-full h-screen bg-gray-100 p-4 overflow-hidden">
+//       <iframe
+//         title="WCD Dept Dashboard"
+//         src="https://app.powerbi.com/view?r=eyJrIjoiMmRmMWQ2NGQtMmJkYi00MWY3LTkzY2ItYWMwZDI2MDc2ZWZjIiwidCI6IjhmOWZhYzA0LTM2MDgtNDEzNi1iNTg1LTE3MTNjZTNmZDkzOSJ9"
+//         className="w-full h-full rounded-lg shadow-md border"
+//         frameBorder="0"
+//         allowFullScreen
+//       />
+//     </div>
+//   );
+// }
+
+
+
+import { useSelector } from "react-redux";
+
 export default function Dashboard() {
+  // 🔹 assuming auth/user data redux मध्ये आहे
+  const { role, collectorOffice } = useSelector(
+    (state) => state.auth.user || {}
+  );
+
+  // 🔹 condition based PowerBI URL
+  const dashboardUrl =
+    role === "Collector Office" && collectorOffice === "Palghar"
+      ? "https://app.powerbi.com/view?r=eyJrIjoiY2ZkYzY2ZmEtYTIwZC00OWU1LWExZTktOTVlMDkwMDBkYzVhIiwidCI6IjhmOWZhYzA0LTM2MDgtNDEzNi1iNTg1LTE3MTNjZTNmZDkzOSJ9"
+      : "https://app.powerbi.com/view?r=eyJrIjoiZDRjOGEwYzUtOTQyMC00NzdhLTg3NDUtNTFjN2ZiNGQ3YWI4IiwidCI6IjhmOWZhYzA0LTM2MDgtNDEzNi1iNTg1LTE3MTNjZTNmZDkzOSJ9";
+
   return (
     <div className="w-full h-screen bg-gray-100 p-4 overflow-hidden">
       <iframe
         title="WCD Dept Dashboard"
-        src="https://app.powerbi.com/view?r=eyJrIjoiMmRmMWQ2NGQtMmJkYi00MWY3LTkzY2ItYWMwZDI2MDc2ZWZjIiwidCI6IjhmOWZhYzA0LTM2MDgtNDEzNi1iNTg1LTE3MTNjZTNmZDkzOSJ9"
+        src={dashboardUrl}
         className="w-full h-full rounded-lg shadow-md border"
         frameBorder="0"
         allowFullScreen
